@@ -13,6 +13,8 @@ import butterknife.OnClick;
 import com.liuzhao.divineapp.R;
 import com.liuzhao.divineapp.bean.UserResult;
 import com.liuzhao.divineapp.view.LoginView;
+import com.umeng.socialize.UMShareListener;
+import com.umeng.socialize.bean.SHARE_MEDIA;
 
 /**
  * 登录
@@ -32,16 +34,33 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_qq:
-                Toast.makeText(LoginActivity.this, "QQ", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.iv_weixin:
-                Toast.makeText(LoginActivity.this, "微信", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.iv_weibo:
-                Toast.makeText(LoginActivity.this, "微博", Toast.LENGTH_SHORT).show();
                 break;
         }
     }
+
+    UMShareListener shareListener = new UMShareListener() {
+        @Override
+        public void onStart(SHARE_MEDIA platform) {
+        }
+
+        @Override
+        public void onResult(SHARE_MEDIA platform) {
+        }
+
+        @Override
+        public void onError(SHARE_MEDIA platform, Throwable t) {
+        }
+
+        @Override
+        public void onCancel(SHARE_MEDIA platform) {
+
+
+        }
+    };
 
     @Override
     public void clearEditText() {
