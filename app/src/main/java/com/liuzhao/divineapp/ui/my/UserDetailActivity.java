@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import liuzhao.com.divineapp.R;
+import com.liuzhao.divineapp.R;
 
 public class UserDetailActivity extends AppCompatActivity {
 

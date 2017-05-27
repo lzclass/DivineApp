@@ -16,14 +16,9 @@
 
 package com.liuzhao.divineapp.base;
 
-public abstract class BasePresenter<T> {
-    public T mView;
+public interface BasePresenter {
+    void subscribe();
 
-    public void attach(T mView) {
-        this.mView = mView;
-    }
+    void unsubscribe();
 
-    public void dettach() {
-        mView = null;
-    }
 }
