@@ -9,9 +9,9 @@ import android.widget.Toast;
 
 import com.liuzhao.divineapp.R;
 import com.liuzhao.divineapp.base.BaseActivity;
-import com.liuzhao.divineapp.base.BaseApplication;
 import com.umeng.socialize.UMAuthListener;
 import com.umeng.socialize.UMShareAPI;
+import com.umeng.socialize.UMShareConfig;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 
 import java.util.Map;
@@ -58,7 +58,8 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
-
+        umShareAPI = UMShareAPI.get(this);
+        mPresenter = new LoginPresenter(this);
     }
 
     private UMAuthListener umAuthListener = new UMAuthListener() {
@@ -124,7 +125,7 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
+        umShareAPI.onActivityResult(requestCode, resultCode, data);
 
     }
 }

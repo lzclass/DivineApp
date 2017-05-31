@@ -15,7 +15,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="30dp"
-        android:text="———————— 使用关联帐号登录 ————————"
+        android:text="———使用关联帐号登录 ———"
         android:textColor="@color/white"
         android:textSize="16sp" />
 
@@ -27,15 +27,15 @@
 
         <ImageView
             android:id="@+id/iv_qq"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:background="@mipmap/login_qq" />
 
         <ImageView
             android:id="@+id/iv_weixin"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:background="@mipmap/login_weixin" />
     </LinearLayout>
