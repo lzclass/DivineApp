@@ -17,7 +17,7 @@
 package com.liuzhao.divineapp.base;
 
 public interface BaseView<T> {
-
+    // View的实现类（即Fragment）就持有了Presenter的实例，于是，View就可以通过Presenter来操作Model中的数据接口了
     void setPresenter(T presenter);
 
 }

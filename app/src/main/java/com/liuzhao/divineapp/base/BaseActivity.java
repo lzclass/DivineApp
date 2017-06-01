@@ -8,32 +8,25 @@ import android.widget.Toast;
 
 public abstract class BaseActivity extends AppCompatActivity {
     private ProgressDialog progressDialog;
-//    public T presenter;
+    protected BaseApplication baseApplication;
 
     @Override
     protected void onResume() {
         super.onResume();
-//        presenter.attach((V) this);
+
     }
 
     @Override
     protected void onDestroy() {
-//        presenter.dettach();
+
         super.onDestroy();
     }
-
-    // 实例化presenter
-//    public abstract T initPresenter();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setupActivityComponent();
-//        presenter = initPresenter();
+        baseApplication = BaseApplication.getSelf();
     }
-
-
-    public abstract void setupActivityComponent();
 
 
     protected void showProgressDialog(String message) {
