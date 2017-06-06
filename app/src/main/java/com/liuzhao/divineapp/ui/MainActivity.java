@@ -18,6 +18,7 @@ import android.widget.TextView;
 import com.liuzhao.divineapp.R;
 import com.liuzhao.divineapp.ui.login.LoginActivity;
 import com.liuzhao.divineapp.ui.my.UserDetailActivity;
+import com.liuzhao.divineapp.utils.ShareUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -87,6 +88,10 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.nav_1) {
             startActivity(new Intent(MainActivity.this, UserDetailActivity.class));
         } else if (id == R.id.nav_2) {
+
+        }else if (id == R.id.nav_share) {
+            ShareUtils.shareText(MainActivity.this);
+        }else if (id == R.id.nav_send) {
 
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

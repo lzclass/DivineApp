@@ -50,8 +50,7 @@ public class UserResult {
         return iconurl;
     }
 
-    public void setIconurl(String iconur
-                           l) {
+    public void setIconurl(String iconurl) {
         this.iconurl = iconurl;
     }
 
