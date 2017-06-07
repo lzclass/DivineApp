@@ -8,4 +8,6 @@ import com.liuzhao.divineapp.data.entity.UserResult;
 public interface UserDataSource {
 
     void saveUserInfo(UserResult user);
+
+    UserResult getUserInfo(String userId);
 }

@@ -7,6 +7,8 @@ import android.widget.Toast;
 import com.liuzhao.divineapp.base.BaseActivity;
 import com.liuzhao.divineapp.data.UserRepository;
 import com.liuzhao.divineapp.data.entity.UserResult;
+import com.liuzhao.divineapp.data.local.PreferencesManager;
+import com.liuzhao.divineapp.ui.main.MainActivity;
 import com.umeng.socialize.UMAuthListener;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.bean.SHARE_MEDIA;
@@ -22,10 +24,10 @@ public class LoginPresenter implements LoginContract.Presenter {
     @NonNull
     private final LoginContract.View loginView;
     private UserRepository mUserRepository;
-    private BaseActivity mContext;
+    private LoginActivity mContext;
 
 
-    public LoginPresenter(BaseActivity mContext, UserRepository userRepository, @NonNull LoginContract.View loginView) {
+    public LoginPresenter(LoginActivity mContext, UserRepository userRepository, @NonNull LoginContract.View loginView) {
         this.loginView = loginView;
         this.mContext = mContext;
         this.mUserRepository = userRepository;
@@ -56,7 +58,11 @@ public class LoginPresenter implements LoginContract.Presenter {
             userResult.setProvince(data.get("province"));
             userResult.setCity(data.get("city"));
             userResult.setAccesstoken(data.get("expiration"));
+            PreferencesManager.USER.setString(PreferencesManager.PREFERENCES_USER_ID, userResult.getUid());
             mUserRepository.saveUserInfo(userResult);
+            mContext.setResult(MainActivity.LOGIN_SUCCESS);
+            mContext.finish();
+
         }
 
         @Override

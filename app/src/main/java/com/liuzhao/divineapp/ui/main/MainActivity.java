@@ -1,4 +1,4 @@
-package com.liuzhao.divineapp.ui;
+package com.liuzhao.divineapp.ui.main;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,7 +7,6 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,6 +15,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.liuzhao.divineapp.R;
+import com.liuzhao.divineapp.base.BaseActivity;
+import com.liuzhao.divineapp.base.BaseApplication;
+import com.liuzhao.divineapp.data.UserRepository;
+import com.liuzhao.divineapp.data.entity.UserResult;
+import com.liuzhao.divineapp.data.local.PreferencesManager;
 import com.liuzhao.divineapp.ui.login.LoginActivity;
 import com.liuzhao.divineapp.ui.my.UserDetailActivity;
 import com.liuzhao.divineapp.utils.ShareUtils;
@@ -24,8 +28,10 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+import static com.google.common.base.Preconditions.checkNotNull;
+
+public class MainActivity extends BaseActivity
+        implements NavigationView.OnNavigationItemSelectedListener, MainContract.View {
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.fab)
@@ -37,6 +43,26 @@ public class MainActivity extends AppCompatActivity
     ImageView iv_head;
     TextView tv_name;
     LinearLayout ll_homepage;
+    public static final int LOGIN_SUCCESS = 101;
+    private MainContract.Presenter mPresenter;
+
+    @Override
+    public void setPresenter(MainContract.Presenter presenter) {
+        mPresenter = checkNotNull(presenter);
+    }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mPresenter.subscribe();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        mPresenter.unsubscribe();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,10 +83,9 @@ public class MainActivity extends AppCompatActivity
         ll_homepage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                startActivityForResult(new Intent(MainActivity.this, LoginActivity.class), 1);
             }
         });
-        tv_name.setText("行尽天涯");
     }
 
     @OnClick({R.id.fab})
@@ -89,13 +114,28 @@ public class MainActivity extends AppCompatActivity
             startActivity(new Intent(MainActivity.this, UserDetailActivity.class));
         } else if (id == R.id.nav_2) {
 
-        }else if (id == R.id.nav_share) {
+        } else if (id == R.id.nav_share) {
             ShareUtils.shareText(MainActivity.this);
-        }else if (id == R.id.nav_send) {
+        } else if (id == R.id.nav_send) {
 
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public void refreshUi() {
+        UserRepository userRepository = UserRepository.getInstance(BaseApplication.getSelf());
+        UserResult userResult = userRepository.getUserInfo(PreferencesManager.USER.getUserId());
+        tv_name.setText(userResult.getName());
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == LOGIN_SUCCESS) {
+            refreshUi();
+        }
     }
 }

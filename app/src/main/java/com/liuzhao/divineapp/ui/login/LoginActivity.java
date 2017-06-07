@@ -7,9 +7,8 @@ import android.widget.ImageView;
 
 import com.liuzhao.divineapp.R;
 import com.liuzhao.divineapp.base.BaseActivity;
+import com.liuzhao.divineapp.base.BaseApplication;
 import com.liuzhao.divineapp.data.UserRepository;
-import com.liuzhao.divineapp.data.local.UserLocalDataSource;
-import com.liuzhao.divineapp.data.remote.UserRemoteDataSource;
 import com.umeng.socialize.UMShareAPI;
 
 import butterknife.BindViews;
@@ -49,7 +48,7 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
-        UserRepository userRepository = UserRepository.getInstance(UserLocalDataSource.getInstance(getApplicationContext()), UserRemoteDataSource.getInstance());
+        UserRepository userRepository = UserRepository.getInstance(BaseApplication.getSelf());
         mPresenter = new LoginPresenter(this, userRepository, this);
     }
 
