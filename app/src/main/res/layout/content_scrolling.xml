@@ -12,7 +12,6 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="10dp">
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -32,6 +31,8 @@
                 android:text="八字"
                 android:textSize="16sp" />
         </LinearLayout>
+
+        <View style="@style/line_horizontal" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -53,6 +54,8 @@
                 android:textSize="16sp" />
         </LinearLayout>
 
+        <View style="@style/line_horizontal" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -72,6 +75,8 @@
                 android:text="男"
                 android:textSize="16sp" />
         </LinearLayout>
+
+        <View style="@style/line_horizontal" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -93,6 +98,8 @@
                 android:textSize="16sp" />
         </LinearLayout>
 
+        <View style="@style/line_horizontal" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -113,6 +120,8 @@
                 android:textSize="16sp" />
         </LinearLayout>
 
+        <View style="@style/line_horizontal" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -132,5 +141,7 @@
                 android:text="山东临沂"
                 android:textSize="16sp" />
         </LinearLayout>
+
+        <View style="@style/line_horizontal" />
     </LinearLayout>
 </android.support.v4.widget.NestedScrollView>

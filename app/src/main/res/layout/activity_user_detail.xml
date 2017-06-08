@@ -23,7 +23,7 @@
             app:statusBarScrim="@android:color/transparent">
 
             <ImageView
-                android:id="@+id/main.backdrop"
+                android:id="@+id/iv_titlebg"
                 android:layout_width="wrap_content"
                 android:layout_height="300dp"
                 android:scaleType="centerCrop"
@@ -42,14 +42,14 @@
     </android.support.design.widget.AppBarLayout>
 
     <include layout="@layout/content_scrolling" />
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab_head"
+    <!--android:background="@mipmap/icon_userhead_defaut"-->
+    <ImageView
+        android:id="@+id/iv_head"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:layout_margin="@dimen/fab_margin"
+        android:layout_margin="10dp"
         app:layout_anchor="@id/app_bar"
         app:layout_anchorGravity="bottom|end"
-        app:srcCompat="@android:drawable/ic_dialog_email" />
+        app:srcCompat="@mipmap/icon_userhead_defaut" />
 
 </android.support.design.widget.CoordinatorLayout>

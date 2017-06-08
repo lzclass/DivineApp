@@ -16,13 +16,13 @@ import android.widget.TextView;
 
 import com.liuzhao.divineapp.R;
 import com.liuzhao.divineapp.base.BaseActivity;
-import com.liuzhao.divineapp.base.BaseApplication;
 import com.liuzhao.divineapp.data.UserRepository;
 import com.liuzhao.divineapp.data.entity.UserResult;
 import com.liuzhao.divineapp.data.local.PreferencesManager;
 import com.liuzhao.divineapp.ui.login.LoginActivity;
 import com.liuzhao.divineapp.ui.my.UserDetailActivity;
 import com.liuzhao.divineapp.utils.ShareUtils;
+import com.liuzhao.divineapp.utils.image.GlideImgManager;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -45,6 +45,7 @@ public class MainActivity extends BaseActivity
     LinearLayout ll_homepage;
     public static final int LOGIN_SUCCESS = 101;
     private MainContract.Presenter mPresenter;
+    private String userId;
 
     @Override
     public void setPresenter(MainContract.Presenter presenter) {
@@ -80,12 +81,20 @@ public class MainActivity extends BaseActivity
         iv_head = (ImageView) headerView.findViewById(R.id.iv_head);
         tv_name = (TextView) headerView.findViewById(R.id.tv_name);
         ll_homepage = (LinearLayout) headerView.findViewById(R.id.ll_homepage);
+
         ll_homepage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivityForResult(new Intent(MainActivity.this, LoginActivity.class), 1);
+                if ("".equals(userId)) {
+                    startActivityForResult(new Intent(MainActivity.this, LoginActivity.class), 1);
+                } else {
+                    startActivity(new Intent(MainActivity.this, UserDetailActivity.class));
+                }
+
             }
         });
+        mPresenter = new MainPresenter(MainActivity.this, this);
+        refreshUi();
     }
 
     @OnClick({R.id.fab})
@@ -111,7 +120,7 @@ public class MainActivity extends BaseActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.nav_1) {
-            startActivity(new Intent(MainActivity.this, UserDetailActivity.class));
+
         } else if (id == R.id.nav_2) {
 
         } else if (id == R.id.nav_share) {
@@ -126,9 +135,15 @@ public class MainActivity extends BaseActivity
 
     @Override
     public void refreshUi() {
-        UserRepository userRepository = UserRepository.getInstance(BaseApplication.getSelf());
-        UserResult userResult = userRepository.getUserInfo(PreferencesManager.USER.getUserId());
-        tv_name.setText(userResult.getName());
+        UserRepository userRepository = UserRepository.getInstance(baseApplication);
+        userId = PreferencesManager.USER.getUserId();
+        UserResult userResult = userRepository.getUserInfo(userId);
+        if ("".equals(userId)) {
+            tv_name.setText("未登录");
+        } else {
+            tv_name.setText(userResult.getName());
+        }
+        GlideImgManager.glideLoader(MainActivity.this, userResult.getIconurl(), 0, 0, iv_head);
     }
 
     @Override

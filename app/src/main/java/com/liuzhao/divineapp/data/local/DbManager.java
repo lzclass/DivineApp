@@ -19,8 +19,7 @@ public class DBManager {
     private DbHelper dbHelper;
 
     private DBManager() {
-        dbHelper = DbHelper.getInstance(BaseApplication.getSelf()
-                .getApplicationContext());
+        dbHelper = DbHelper.getInstance(BaseApplication.getSelf());
     }
 
     public static synchronized DBManager getInstance() {
@@ -29,6 +28,7 @@ public class DBManager {
         }
         return dbMgr;
     }
+
     /**
      * 获取联系人list
      *
@@ -121,19 +121,16 @@ public class DBManager {
      *
      * @return
      */
-    synchronized public UserResult getUser(String userid) {
+    synchronized public UserResult getUser(String userId) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         UserResult user = new UserResult();
 
         if (db.isOpen()) {
-            Cursor cursor = db.rawQuery("select * from " + UserDao.TABLE_NAME
-                    + UserDao.COLUMN_NAME_USER_ID + "=?", new String[]{userid});
-            if (cursor != null) {
-
+            Cursor cursor = db.rawQuery("select * from " + UserDao.TABLE_NAME + " where "
+                    + UserDao.COLUMN_NAME_USER_ID + " =?", new String[]{userId});
+            if (cursor != null && cursor.moveToFirst()) {
                 String name = cursor.getString(cursor
                         .getColumnIndex(UserDao.COLUMN_NAME_NAME));
-                String userId = cursor.getString(cursor
-                        .getColumnIndex(UserDao.COLUMN_NAME_USER_ID));
                 String accessToken = cursor.getString(cursor
                         .getColumnIndex(UserDao.COLUMN_NAME_ACCESSTOKEN));
                 String city = cursor.getString(cursor

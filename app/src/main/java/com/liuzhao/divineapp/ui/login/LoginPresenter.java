@@ -48,8 +48,6 @@ public class LoginPresenter implements LoginContract.Presenter {
 
         @Override
         public void onComplete(SHARE_MEDIA platform, int action, Map<String, String> data) {
-            Toast.makeText(mContext, "认证通过", Toast.LENGTH_SHORT).show();
-            Log.d("umeng + QQ" + data.toString());
             UserResult userResult = new UserResult();
             userResult.setUid(data.get("uid"));
             userResult.setName(data.get("name"));
