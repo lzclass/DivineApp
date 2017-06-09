@@ -12,6 +12,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="10dp">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -22,13 +23,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="ID号："
+                android:textColor="@color/app_bg"
                 android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/tv_id"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="八字"
+                android:text="63993048"
                 android:textSize="16sp" />
         </LinearLayout>
 
@@ -44,6 +46,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="昵称："
+                android:textColor="@color/app_bg"
                 android:textSize="16sp" />
 
             <TextView
@@ -66,14 +69,18 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="性别："
+                android:textColor="@color/app_bg"
                 android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/tv_sex"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:drawableRight="@mipmap/icon_arrow_right"
                 android:text="男"
                 android:textSize="16sp" />
+
         </LinearLayout>
 
         <View style="@style/line_horizontal" />
@@ -88,14 +95,18 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="生日："
+                android:textColor="@color/app_bg"
                 android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/tv_birth"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:drawableRight="@mipmap/icon_arrow_right"
                 android:text="2012-06-06 12：12"
                 android:textSize="16sp" />
+
         </LinearLayout>
 
         <View style="@style/line_horizontal" />
@@ -110,12 +121,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="邮箱："
+                android:textColor="@color/app_bg"
                 android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/tv_email"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:drawableRight="@mipmap/icon_arrow_right"
                 android:text="63993048@qq.com"
                 android:textSize="16sp" />
         </LinearLayout>
@@ -132,12 +146,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="地址："
+                android:textColor="@color/app_bg"
                 android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/tv_address"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:drawableRight="@mipmap/icon_arrow_right"
                 android:text="山东临沂"
                 android:textSize="16sp" />
         </LinearLayout>

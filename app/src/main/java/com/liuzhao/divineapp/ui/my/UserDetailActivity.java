@@ -53,7 +53,6 @@ public class UserDetailActivity extends BaseActivity implements UserDetailContra
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_detail);
         ButterKnife.bind(this);
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         UserRepository userRepository = UserRepository.getInstance(baseApplication);
         UserResult userResult = userRepository.getUserInfo(PreferencesManager.USER.getUserId());
         toolbar.setTitle(userResult.getName());

@@ -128,7 +128,6 @@ public class MainActivity extends BaseActivity
         } else if (id == R.id.nav_send) {
 
         }
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
@@ -143,7 +142,7 @@ public class MainActivity extends BaseActivity
         } else {
             tv_name.setText(userResult.getName());
         }
-        GlideImgManager.glideLoader(MainActivity.this, userResult.getIconurl(), 0, 0, iv_head);
+        GlideImgManager.glideLoaderCircle(MainActivity.this, userResult.getIconurl(), R.mipmap.user_defaut_head, R.mipmap.user_defaut_head, iv_head);
     }
 
     @Override
