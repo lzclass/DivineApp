@@ -60,6 +60,34 @@
         <View style="@style/line_horizontal" />
 
         <LinearLayout
+            android:id="@+id/ll_realName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="姓名："
+                android:textColor="@color/app_bg"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tv_realName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:drawableRight="@mipmap/icon_arrow_right"
+                android:text="刘昭"
+                android:textSize="16sp" />
+
+        </LinearLayout>
+
+        <View style="@style/line_horizontal" />
+
+        <LinearLayout
+            android:id="@+id/ll_sex"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -86,6 +114,7 @@
         <View style="@style/line_horizontal" />
 
         <LinearLayout
+            android:id="@+id/ll_birthday"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -99,7 +128,7 @@
                 android:textSize="16sp" />
 
             <TextView
-                android:id="@+id/tv_birth"
+                android:id="@+id/tv_birthday"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"

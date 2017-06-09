@@ -1,5 +1,7 @@
 package com.liuzhao.divineapp.ui.my;
 
+import android.widget.TextView;
+
 import com.liuzhao.divineapp.base.BasePresenter;
 import com.liuzhao.divineapp.base.BaseView;
 
@@ -13,6 +15,10 @@ public class UserDetailContract {
     }
 
     interface Presenter extends BasePresenter {
+        void editSex(TextView view);
 
+        void editBirthday(TextView view);
+
+        void eidtRealName(TextView view);
     }
 }

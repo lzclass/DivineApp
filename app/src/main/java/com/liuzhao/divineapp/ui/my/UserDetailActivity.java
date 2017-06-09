@@ -5,8 +5,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.liuzhao.divineapp.R;
 import com.liuzhao.divineapp.base.BaseActivity;
@@ -16,7 +16,9 @@ import com.liuzhao.divineapp.data.local.PreferencesManager;
 import com.liuzhao.divineapp.utils.image.GlideImgManager;
 
 import butterknife.BindView;
+import butterknife.BindViews;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -25,12 +27,17 @@ public class UserDetailActivity extends BaseActivity implements UserDetailContra
     ImageView iv_head;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
+    //    @BindViews({R.id.ll_realName,R.id.ll_sex,R.id.ll_birthday})
+//    LinearLayout[] ll_clickViews;
+    @BindViews({R.id.tv_realName, R.id.tv_sex, R.id.tv_birthday})
+    TextView[] tv_Views;
     private UserDetailContract.Presenter mPresenter;
 
     @Override
     public void setPresenter(UserDetailContract.Presenter presenter) {
         mPresenter = checkNotNull(presenter);
     }
+
     @Override
     public void onResume() {
         super.onResume();
@@ -46,6 +53,21 @@ public class UserDetailActivity extends BaseActivity implements UserDetailContra
     @Override
     public void refreshUi() {
 
+    }
+
+    @OnClick({R.id.ll_realName, R.id.ll_sex, R.id.ll_birthday})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.ll_realName:
+                mPresenter.eidtRealName(tv_Views[0]);
+                break;
+            case R.id.ll_sex:
+                mPresenter.editSex(tv_Views[1]);
+                break;
+            case R.id.ll_birthday:
+                mPresenter.editBirthday(tv_Views[2]);
+                break;
+        }
     }
 
     @Override
@@ -66,7 +88,7 @@ public class UserDetailActivity extends BaseActivity implements UserDetailContra
             }
         });
         GlideImgManager.glideLoaderCircle(this, userResult.getIconurl(), 0, 0, iv_head);
-        mPresenter = new UserDetailPresenter(this,this);
+        mPresenter = new UserDetailPresenter(this, this);
     }
 
     @Override
