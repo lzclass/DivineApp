@@ -16,5 +16,4 @@ public class UserDao implements BaseColumns {
     public static final String COLUMN_NAME_PROVINCE = "province";
     public static final String COLUMN_NAME_GENDER = "gender";//性别
     public static final String COLUMN_NAME_ICONURL = "iconurl";//头像
-
 }

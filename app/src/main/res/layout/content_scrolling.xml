@@ -128,12 +128,19 @@
                 android:textSize="16sp" />
 
             <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="阳历 "
+                android:textSize="16sp" />
+
+            <TextView
                 android:id="@+id/tv_birthday"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:drawableRight="@mipmap/icon_arrow_right"
-                android:text="2012-06-06 12：12"
+                android:hint="阳历"
+                android:text="2012-06-06"
                 android:textSize="16sp" />
 
         </LinearLayout>
@@ -141,10 +148,76 @@
         <View style="@style/line_horizontal" />
 
         <LinearLayout
+            android:id="@+id/ll_birthTime"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:padding="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="时辰："
+                android:textColor="@color/app_bg"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tv_birthTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:drawableRight="@mipmap/icon_arrow_right"
+                android:text="08：00"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <View style="@style/line_horizontal" />
+
+        <LinearLayout
+            android:id="@+id/ll_birthNongli"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="生日："
+                android:textColor="@color/app_bg"
+                android:textSize="16sp"
+                android:visibility="invisible" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="农历 "
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tv_dayNongli"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="二零一七年六月十二日"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/ll_timeNongli"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:paddingLeft="5dp"
+                android:text="辰时"
+                android:textSize="16sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="10dp"
+            android:visibility="gone">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -163,13 +236,13 @@
                 android:textSize="16sp" />
         </LinearLayout>
 
-        <View style="@style/line_horizontal" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:padding="10dp">
+            android:padding="10dp"
+            android:visibility="gone">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -188,6 +261,49 @@
                 android:textSize="16sp" />
         </LinearLayout>
 
-        <View style="@style/line_horizontal" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="属相："
+                android:textColor="@color/app_bg"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tv_shuxiang"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="16sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="星座："
+                android:textColor="@color/app_bg"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tv_xingzuo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="16sp" />
+
+        </LinearLayout>
+
     </LinearLayout>
 </android.support.v4.widget.NestedScrollView>

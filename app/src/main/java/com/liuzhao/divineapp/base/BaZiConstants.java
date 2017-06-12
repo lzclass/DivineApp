@@ -8,6 +8,7 @@ public interface BaZiConstants {
     String chineseNumber[] = {"正", "二", "三", "四", "五", "六", "七", "八", "九", "十", "十一", "腊"};
     String[] TianGan = {"甲", "乙", "丙", "丁", "戊", "己", "庚", "辛", "壬", "癸"};
     String[] DiZhi = {"子", "丑", "寅", "卯", "辰", "巳", "午", "未", "申", "酉", "戌", "亥"};
+    String[] SHICHEN = {"子", "丑", "寅", "卯", "辰", "巳", "午", "未", "申", "酉", "戌", "亥","子"};
     /**
      * 阴历
      */
@@ -42,4 +43,5 @@ public interface BaZiConstants {
      * 生肖
      */
     String[] animalsName = new String[]{"鼠", "牛", "虎", "兔", "龙", "蛇", "马", "羊", "猴", "鸡", "狗", "猪"};
+
 }

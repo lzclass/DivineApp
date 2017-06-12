@@ -17,8 +17,10 @@ public class UserDetailContract {
     interface Presenter extends BasePresenter {
         void editSex(TextView view);
 
-        void editBirthday(TextView view);
+        void editBirthday(TextView birthDay,TextView tv_nongliDate,TextView tv_shengxiao,TextView tv_xingzuo);
 
-        void eidtRealName(TextView view);
+        void editBirthTime(TextView birthTime,TextView tv_nongliTime);
+
+        void editRealName(TextView view);
     }
 }

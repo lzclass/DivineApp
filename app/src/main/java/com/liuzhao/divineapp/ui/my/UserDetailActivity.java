@@ -27,9 +27,9 @@ public class UserDetailActivity extends BaseActivity implements UserDetailContra
     ImageView iv_head;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
-    //    @BindViews({R.id.ll_realName,R.id.ll_sex,R.id.ll_birthday})
-//    LinearLayout[] ll_clickViews;
-    @BindViews({R.id.tv_realName, R.id.tv_sex, R.id.tv_birthday})
+    @BindViews({R.id.tv_birthday,R.id.tv_dayNongli,R.id.tv_birthTime,R.id.ll_timeNongli})
+    TextView[] tv_BirthViews;
+    @BindViews({R.id.tv_realName, R.id.tv_sex,R.id.tv_shuxiang,R.id.tv_xingzuo})
     TextView[] tv_Views;
     private UserDetailContract.Presenter mPresenter;
 
@@ -55,17 +55,20 @@ public class UserDetailActivity extends BaseActivity implements UserDetailContra
 
     }
 
-    @OnClick({R.id.ll_realName, R.id.ll_sex, R.id.ll_birthday})
+    @OnClick({R.id.ll_realName, R.id.ll_sex, R.id.ll_birthday, R.id.ll_birthTime})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.ll_realName:
-                mPresenter.eidtRealName(tv_Views[0]);
+                mPresenter.editRealName(tv_Views[0]);
                 break;
             case R.id.ll_sex:
                 mPresenter.editSex(tv_Views[1]);
                 break;
             case R.id.ll_birthday:
-                mPresenter.editBirthday(tv_Views[2]);
+                mPresenter.editBirthday(tv_BirthViews[0],tv_BirthViews[1],tv_Views[2],tv_Views[3]);
+                break;
+            case R.id.ll_birthTime:
+                mPresenter.editBirthTime(tv_BirthViews[2],tv_BirthViews[3]);
                 break;
         }
     }
