@@ -36,7 +36,7 @@ public class UserRepository implements UserDataSource {
             return;
         }
         DBManager.getInstance().saveUser(user);
-        // Do in memory cache update to keep the app UI up to date
+//         Do in memory cache update to keep the app UI up to date
         if (mCachedUser == null) {
             mCachedUser = new LinkedHashMap<>();
         }

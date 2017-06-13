@@ -13,6 +13,7 @@ import com.liuzhao.divineapp.base.BaseActivity;
 import com.liuzhao.divineapp.data.UserRepository;
 import com.liuzhao.divineapp.data.entity.UserResult;
 import com.liuzhao.divineapp.data.local.PreferencesManager;
+import com.liuzhao.divineapp.utils.StringUtils;
 import com.liuzhao.divineapp.utils.image.GlideImgManager;
 
 import butterknife.BindView;
@@ -27,9 +28,9 @@ public class UserDetailActivity extends BaseActivity implements UserDetailContra
     ImageView iv_head;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
-    @BindViews({R.id.tv_birthday,R.id.tv_dayNongli,R.id.tv_birthTime,R.id.ll_timeNongli})
+    @BindViews({R.id.tv_birthday,R.id.tv_dayNongli,R.id.tv_birthTime,R.id.tv_timeNongli})
     TextView[] tv_BirthViews;
-    @BindViews({R.id.tv_realName, R.id.tv_sex,R.id.tv_shuxiang,R.id.tv_xingzuo})
+    @BindViews({R.id.tv_realName, R.id.tv_sex,R.id.tv_shuxiang,R.id.tv_xingzuo,R.id.tv_nickName})
     TextView[] tv_Views;
     private UserDetailContract.Presenter mPresenter;
 
@@ -52,7 +53,32 @@ public class UserDetailActivity extends BaseActivity implements UserDetailContra
 
     @Override
     public void refreshUi() {
+        UserRepository userRepository = UserRepository.getInstance(baseApplication);
+        UserResult userResult = userRepository.getUserInfo(PreferencesManager.USER.getUserId());
+        toolbar.setTitle(userResult.getName());
+        setSupportActionBar(toolbar);
 
+        toolbar.setNavigationIcon(R.mipmap.icon_left_arrow);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+        GlideImgManager.glideLoaderCircle(this, userResult.getIconurl(), 0, 0, iv_head);
+        mPresenter = new UserDetailPresenter(this, this);
+        tv_Views[1].setText(userResult.getGender());
+        tv_Views[4].setText(userResult.getName());
+        if (!StringUtils.isEmpty(userResult.getBirthDay())){
+            tv_BirthViews[0].setText(userResult.getBirthDay());
+            tv_BirthViews[1].setText(userResult.getBirthDayNongli());
+            tv_Views[2].setText(userResult.getAnimalSign());
+            tv_Views[3].setText(userResult.getConstellation());
+        }
+        if (!StringUtils.isEmpty(userResult.getBirthTime())){
+            tv_BirthViews[2].setText(userResult.getBirthTime());
+            tv_BirthViews[3].setText(userResult.getBirthTimeNongli());
+        }
     }
 
     @OnClick({R.id.ll_realName, R.id.ll_sex, R.id.ll_birthday, R.id.ll_birthTime})
@@ -78,20 +104,7 @@ public class UserDetailActivity extends BaseActivity implements UserDetailContra
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_detail);
         ButterKnife.bind(this);
-        UserRepository userRepository = UserRepository.getInstance(baseApplication);
-        UserResult userResult = userRepository.getUserInfo(PreferencesManager.USER.getUserId());
-        toolbar.setTitle(userResult.getName());
-        setSupportActionBar(toolbar);
-
-        toolbar.setNavigationIcon(R.mipmap.icon_left_arrow);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
-        GlideImgManager.glideLoaderCircle(this, userResult.getIconurl(), 0, 0, iv_head);
-        mPresenter = new UserDetailPresenter(this, this);
+        refreshUi();
     }
 
     @Override

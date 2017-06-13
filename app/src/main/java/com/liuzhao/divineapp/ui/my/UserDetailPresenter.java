@@ -6,7 +6,10 @@ import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
-import com.liuzhao.divineapp.utils.BaZiUtils;
+import com.liuzhao.divineapp.base.BaseApplication;
+import com.liuzhao.divineapp.data.UserRepository;
+import com.liuzhao.divineapp.data.entity.UserResult;
+import com.liuzhao.divineapp.data.local.PreferencesManager;
 import com.liuzhao.divineapp.utils.CalendarUtils;
 
 import java.util.Calendar;
@@ -34,8 +37,6 @@ public class UserDetailPresenter implements UserDetailContract.Presenter {
 
     }
 
-    BaZiUtils baZiUtils;
-
     @Override
     public void editBirthday(final TextView tv_birthday, final TextView tv_nongliDate, final TextView tv_shuxiang, final TextView tv_xingzuo) {
         Calendar c = Calendar.getInstance();
@@ -48,15 +49,27 @@ public class UserDetailPresenter implements UserDetailContract.Presenter {
                     public void onDateSet(DatePicker view, int year,
                                           int monthOfYear, int dayOfMonth) {
                         ++monthOfYear;
-                        tv_birthday.setText(year + "-" + monthOfYear
-                                + "-" + dayOfMonth);
-                        String xingzuo = CalendarUtils.getAstro(monthOfYear, dayOfMonth);//星座
-
-                        String animalsYear = CalendarUtils.getAnimalsYear(year);//属相
+                        String birthday = new StringBuilder().append(year).append("-")
+                                .append(monthOfYear < 10 ? "0" + monthOfYear : monthOfYear)
+                                .append("-")
+                                .append((dayOfMonth < 10) ? "0" + dayOfMonth : dayOfMonth).toString();
+                        String constellation = CalendarUtils.getAstro(monthOfYear, dayOfMonth);//星座
+                        int[] nongli = CalendarUtils.solarToLunar(year, monthOfYear, dayOfMonth);
+                        String nongliDao = nongli[0] + "-" + nongli[1] + "-" + nongli[2];
                         String nongliDate = CalendarUtils.getSolarToLunar(year, monthOfYear, dayOfMonth);
+                        String animalsYear = CalendarUtils.getAnimalsYear(nongli[0]);//属相
+                        tv_birthday.setText(birthday);
                         tv_nongliDate.setText(nongliDate);
                         tv_shuxiang.setText(animalsYear);
-                        tv_xingzuo.setText(xingzuo);
+                        tv_xingzuo.setText(constellation);
+
+                        UserResult userResult = UserRepository.getInstance(BaseApplication.getSelf()).getUserInfo(PreferencesManager.USER.getUserId());
+                        userResult.setUid(PreferencesManager.USER.getUserId());
+                        userResult.setConstellation(constellation);
+                        userResult.setAnimalSign(animalsYear);
+                        userResult.setBirthDay(birthday);
+                        userResult.setBirthDayNongli(nongliDao);
+                        UserRepository.getInstance(BaseApplication.getSelf()).saveUserInfo(userResult);
                     }
                 }
                 // 设置初始日期
@@ -75,8 +88,16 @@ public class UserDetailPresenter implements UserDetailContract.Presenter {
                     @Override
                     public void onTimeSet(TimePicker view,
                                           int hourOfDay, int minute) {
-                        tv_birthTime.setText(hourOfDay + ":" + minute);
+                        String birthTime = new StringBuilder()
+                                .append(hourOfDay < 10 ? "0" + hourOfDay : hourOfDay)
+                                .append(":")
+                                .append(minute < 10 ? "0" + minute : minute).toString();
+                        tv_birthTime.setText(birthTime);
                         tv_nongliTime.setText(CalendarUtils.getChinaHour(hourOfDay));
+                        UserResult userResult = UserRepository.getInstance(BaseApplication.getSelf()).getUserInfo(PreferencesManager.USER.getUserId());
+                        userResult.setUid(PreferencesManager.USER.getUserId());
+                        userResult.setBirthTime(birthTime);
+                        UserRepository.getInstance(BaseApplication.getSelf()).saveUserInfo(userResult);
                     }
                 }
                 // 设置初始时间

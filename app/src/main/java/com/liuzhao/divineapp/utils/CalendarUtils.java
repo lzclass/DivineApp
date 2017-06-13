@@ -195,18 +195,18 @@ public class CalendarUtils {
             daysOfMonth = daysInLunarMonth(iYear, iMonth);
             offset -= daysOfMonth;
         }
-        // 当前月超过闰月，要校正
-        if (leapMonth != 0 && iMonth > leapMonth) {
-            --iMonth;
-
-            if (iMonth == leapMonth) {
-                isLeap = true;
-            }
-        }
         // offset小于0时，也要校正
         if (offset < 0) {
             offset += daysOfMonth;
             --iMonth;
+        }
+
+        // 当前月超过闰月，要校正
+        if (leapMonth != 0 && iMonth > leapMonth) {
+            --iMonth;
+            if (iMonth == leapMonth) {
+                isLeap = true;
+            }
         }
 
         lunarDate[1] = iMonth;
