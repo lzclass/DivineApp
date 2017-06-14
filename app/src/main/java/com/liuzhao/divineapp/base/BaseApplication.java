@@ -17,7 +17,7 @@ import static android.provider.UserDictionary.Words.APP_ID;
 
 public class BaseApplication extends Application {
 
-    public UMShareAPI umShareAPI;
+    //    public UMShareAPI umShareAPI;
     public static BaseApplication mApp;
 
     public static BaseApplication getSelf() {
@@ -29,8 +29,7 @@ public class BaseApplication extends Application {
         super.onCreate();
         mApp = this;
         Config.DEBUG = true;
-        umShareAPI = UMShareAPI.get(this);
-//        mTencent = Tencent.createInstance(APP_ID, this.getApplicationContext());
+//        umShareAPI = UMShareAPI.get(this);
     }
 
     static {

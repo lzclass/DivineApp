@@ -2,15 +2,21 @@ package com.liuzhao.divineapp.ui.my;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.DialogInterface;
+import android.support.v7.app.AlertDialog;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import com.liuzhao.divineapp.R;
 import com.liuzhao.divineapp.base.BaseApplication;
 import com.liuzhao.divineapp.data.UserRepository;
 import com.liuzhao.divineapp.data.entity.UserResult;
 import com.liuzhao.divineapp.data.local.PreferencesManager;
 import com.liuzhao.divineapp.utils.CalendarUtils;
+import com.liuzhao.divineapp.widget.HanZiEditText;
 
 import java.util.Calendar;
 
@@ -93,10 +99,12 @@ public class UserDetailPresenter implements UserDetailContract.Presenter {
                                 .append(":")
                                 .append(minute < 10 ? "0" + minute : minute).toString();
                         tv_birthTime.setText(birthTime);
-                        tv_nongliTime.setText(CalendarUtils.getChinaHour(hourOfDay));
+                        String birthTimeNongli = CalendarUtils.getChinaHour(hourOfDay);
+                        tv_nongliTime.setText(birthTimeNongli);
                         UserResult userResult = UserRepository.getInstance(BaseApplication.getSelf()).getUserInfo(PreferencesManager.USER.getUserId());
                         userResult.setUid(PreferencesManager.USER.getUserId());
                         userResult.setBirthTime(birthTime);
+                        userResult.setBirthTimeNongli(birthTimeNongli);
                         UserRepository.getInstance(BaseApplication.getSelf()).saveUserInfo(userResult);
                     }
                 }
@@ -107,12 +115,48 @@ public class UserDetailPresenter implements UserDetailContract.Presenter {
     }
 
     @Override
-    public void editSex(TextView view) {
+    public void editSex(final TextView view) {
+        int checkedItem = 0;
+        if ("女".equals(view.getText())) {
+            checkedItem = 1;
+        }
+        new AlertDialog.Builder(mContext)
+                // 设置对话框标题
+                .setTitle("请选择性别")
+                .setSingleChoiceItems(new String[]{"男", "女"}, checkedItem,
+                        new DialogInterface.OnClickListener() {
+
+                            public void onClick(DialogInterface dialog, int which) {
+                                view.setText(which == 0 ? "男" : "女");
+                                dialog.dismiss();
+                            }
+                        }
+                )
+                .setNegativeButton("取消", null)
+                .show();
 
     }
 
     @Override
-    public void editRealName(TextView view) {
+    public void editRealName(final TextView view) {
+        View contentView = LayoutInflater.from(mContext).inflate(R.layout.dialog_layout_edittext, null);
+        final HanZiEditText et_realName = (HanZiEditText) contentView.findViewById(R.id.et_realName);
+        new AlertDialog.Builder(mContext)
+                // 设置对话框标题
+                .setTitle("请输入真实姓名")
+                .setView(contentView)
+                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        view.setText(et_realName.getText().toString());
+                        UserResult userResult = UserRepository.getInstance(BaseApplication.getSelf()).getUserInfo(PreferencesManager.USER.getUserId());
+                        userResult.setUid(PreferencesManager.USER.getUserId());
+                        userResult.setName(et_realName.getText().toString());
+                        UserRepository.getInstance(BaseApplication.getSelf()).saveUserInfo(userResult);
+                    }
+                })
+                .setNegativeButton("取消", null)
+                .show();
 
     }
 }

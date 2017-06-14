@@ -342,7 +342,7 @@ public class CalendarUtils {
     final public static String getChinaHour(int hour) {
         //子时23.00－1.00 北京的时间，因为古代计时和北京时间有差别
         int time = (hour + 1) / 2;
-        String ChinaHour = SHICHEN[time];
+        String ChinaHour = SHICHEN[time]+"时";
         return ChinaHour;
     }
 

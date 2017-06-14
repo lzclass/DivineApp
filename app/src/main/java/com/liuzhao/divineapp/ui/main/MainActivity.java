@@ -21,6 +21,7 @@ import com.liuzhao.divineapp.data.entity.UserResult;
 import com.liuzhao.divineapp.data.local.PreferencesManager;
 import com.liuzhao.divineapp.ui.login.LoginActivity;
 import com.liuzhao.divineapp.ui.my.UserDetailActivity;
+import com.liuzhao.divineapp.ui.setting.SettingActivity;
 import com.liuzhao.divineapp.utils.ShareUtils;
 import com.liuzhao.divineapp.utils.image.GlideImgManager;
 
@@ -44,6 +45,7 @@ public class MainActivity extends BaseActivity
     TextView tv_name;
     LinearLayout ll_homepage;
     public static final int LOGIN_SUCCESS = 101;
+    public static final int LOGOUT_SUCCESS = 102;
     private MainContract.Presenter mPresenter;
     private String userId;
 
@@ -86,7 +88,7 @@ public class MainActivity extends BaseActivity
             @Override
             public void onClick(View v) {
                 if ("".equals(userId)) {
-                    startActivityForResult(new Intent(MainActivity.this, LoginActivity.class), 1);
+                    startActivityForResult(new Intent(MainActivity.this, LoginActivity.class), LOGIN_SUCCESS);
                 } else {
                     startActivity(new Intent(MainActivity.this, UserDetailActivity.class));
                 }
@@ -118,16 +120,21 @@ public class MainActivity extends BaseActivity
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == R.id.nav_1) {
-
-        } else if (id == R.id.nav_2) {
-
-        } else if (id == R.id.nav_share) {
-            ShareUtils.shareText(MainActivity.this);
-        } else if (id == R.id.nav_send) {
-
+        switch (item.getItemId()) {
+            case R.id.nav_1:
+                break;
+            case R.id.nav_2:
+                break;
+            case R.id.nav_share:
+                ShareUtils.shareText(MainActivity.this);
+                break;
+            case R.id.nav_send:
+                break;
+            case R.id.nav_setting:
+                startActivityForResult(new Intent(MainActivity.this, SettingActivity.class), LOGOUT_SUCCESS);
+                break;
         }
+
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
@@ -136,19 +143,24 @@ public class MainActivity extends BaseActivity
     public void refreshUi() {
         UserRepository userRepository = UserRepository.getInstance(baseApplication);
         userId = PreferencesManager.USER.getUserId();
-        UserResult userResult = userRepository.getUserInfo(userId);
+        String iconUrl = null;
         if ("".equals(userId)) {
             tv_name.setText("未登录");
         } else {
-            tv_name.setText(userResult.getName());
+            UserResult userResult = userRepository.getUserInfo(userId);
+            iconUrl = userResult.getIconurl();
+            tv_name.setText(userResult.getNickName());
         }
-        GlideImgManager.glideLoaderCircle(MainActivity.this, userResult.getIconurl(), R.mipmap.user_defaut_head, R.mipmap.user_defaut_head, iv_head);
+        GlideImgManager.glideLoaderCircle(MainActivity.this, iconUrl, R.mipmap.user_defaut_head, R.mipmap.user_defaut_head, iv_head);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == LOGIN_SUCCESS) {
+        if (requestCode == LOGIN_SUCCESS && resultCode == RESULT_OK) {
+            refreshUi();
+        }
+        if (requestCode == LOGOUT_SUCCESS && resultCode == RESULT_OK) {
             refreshUi();
         }
     }
