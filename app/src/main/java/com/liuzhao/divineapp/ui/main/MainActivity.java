@@ -19,6 +19,7 @@ import com.liuzhao.divineapp.base.BaseActivity;
 import com.liuzhao.divineapp.data.UserRepository;
 import com.liuzhao.divineapp.data.entity.UserResult;
 import com.liuzhao.divineapp.data.local.PreferencesManager;
+import com.liuzhao.divineapp.ui.constellation.ConstellationActivity;
 import com.liuzhao.divineapp.ui.login.LoginActivity;
 import com.liuzhao.divineapp.ui.my.UserDetailActivity;
 import com.liuzhao.divineapp.ui.setting.SettingActivity;
@@ -129,6 +130,9 @@ public class MainActivity extends BaseActivity
                 ShareUtils.shareText(MainActivity.this);
                 break;
             case R.id.nav_send:
+                break;
+            case R.id.nav_constellation:
+                startActivity(new Intent(MainActivity.this, ConstellationActivity.class));
                 break;
             case R.id.nav_setting:
                 startActivityForResult(new Intent(MainActivity.this, SettingActivity.class), LOGOUT_SUCCESS);
