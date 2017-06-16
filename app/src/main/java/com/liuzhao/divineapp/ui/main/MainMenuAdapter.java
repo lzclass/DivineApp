@@ -1,8 +1,8 @@
-package com.liuzhao.divineapp.ui.constellation;
+package com.liuzhao.divineapp.ui.main;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import com.liuzhao.divineapp.R;
 import com.liuzhao.divineapp.base.BaseViewHolder;
-import com.liuzhao.divineapp.data.entity.constellation.Constellation;
+import com.liuzhao.divineapp.data.entity.main.MainMenu;
 
 import java.util.List;
 
@@ -19,10 +19,10 @@ import java.util.List;
  * Created by liuzhao on 2017/6/15.
  */
 
-public class ConstellationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements View.OnClickListener, View.OnLongClickListener {
+public class MainMenuAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements View.OnClickListener, View.OnLongClickListener {
 
     private Context mContext;
-    private List<Constellation> datas;//数据
+    private List<MainMenu> datas;//数据
 
     //自定义监听事件
     public interface OnRecyclerViewItemClickListener {
@@ -38,48 +38,30 @@ public class ConstellationAdapter extends RecyclerView.Adapter<RecyclerView.View
     }
 
     //适配器初始化
-    public ConstellationAdapter(Context context, List<Constellation> datas) {
+    public MainMenuAdapter(Context context, List<MainMenu> datas) {
         mContext = context;
         this.datas = datas;
     }
 
-//    @Override
-//    public int getItemViewType(int position) {
-//        //判断item类别，是图还是显示页数（图片有URL）
-//        if (!TextUtils.isEmpty(datas.get(position).getName())) {
-//            return 0;
-//        } else {
-//            return 1;
-//        }
-//    }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        //根据item类别加载不同ViewHolder
-//        if (viewType == 0) {
-            View view = LayoutInflater.from(mContext).inflate(R.layout.adapter_item_constellation_list, parent,
-                    false);
-            MyViewHolder holder = new MyViewHolder(view);
-            //给布局设置点击和长点击监听
-            view.setOnClickListener(this);
-            view.setOnLongClickListener(this);
-
-            return holder;
-//        }
-//        return null;
-
+        View view = LayoutInflater.from(mContext).inflate(R.layout.adapter_item_main_menu, parent, false);
+        MyViewHolder holder = new MyViewHolder(view);
+        //给布局设置点击和长点击监听
+        view.setOnClickListener(this);
+        view.setOnLongClickListener(this);
+        return holder;
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         //将数据与item视图进行绑定，如果是MyViewHolder就加载网络图片，如果是MyViewHolder2就显示页数
 //        if (holder instanceof MyViewHolder) {
-            MyViewHolder myViewHolder = (MyViewHolder) holder;
-            Constellation constellation = datas.get(position);
-            myViewHolder.iv_constellation_logo.setBackgroundResource(constellation.getImageDrawble());
-            myViewHolder.tv_date.setText(constellation.getDate());
-            myViewHolder.tv_name.setText(constellation.getName());
-            myViewHolder.tv_property.setText(constellation.getProperty());
+        MyViewHolder myViewHolder = (MyViewHolder) holder;
+        MainMenu mainMenu = datas.get(position);
+        myViewHolder.iv_icon.setBackgroundResource(mainMenu.getImageDrawable());
+        myViewHolder.tv_name.setText(mainMenu.getName());
 //        }
 
     }
@@ -107,19 +89,21 @@ public class ConstellationAdapter extends RecyclerView.Adapter<RecyclerView.View
 
     //自定义ViewHolder，用于加载图片
     class MyViewHolder extends RecyclerView.ViewHolder {
-        private ImageView iv_constellation_logo;
+        private ImageView iv_icon;
         private TextView tv_name;
-        private TextView tv_date;
-        private TextView tv_property;
+
 
         public MyViewHolder(View view) {
             super(view);
-            iv_constellation_logo = BaseViewHolder.get(view, R.id.iv_constellation_logo);
+            iv_icon = BaseViewHolder.get(view, R.id.iv_icon);
             tv_name = BaseViewHolder.get(view, R.id.tv_name);
-            tv_date = BaseViewHolder.get(view, R.id.tv_date);
-            tv_property = BaseViewHolder.get(view, R.id.tv_property);
         }
     }
 
+    public void move(int fromPosition, int toPosition) {
+        MainMenu mainMenu = datas.remove(fromPosition);
+        datas.add(toPosition > fromPosition ? toPosition - 1 : toPosition, mainMenu);
+        notifyItemMoved(fromPosition, toPosition);
+    }
 
 }

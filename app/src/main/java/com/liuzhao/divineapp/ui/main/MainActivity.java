@@ -7,7 +7,11 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -18,18 +22,25 @@ import com.liuzhao.divineapp.R;
 import com.liuzhao.divineapp.base.BaseActivity;
 import com.liuzhao.divineapp.data.UserRepository;
 import com.liuzhao.divineapp.data.entity.UserResult;
+import com.liuzhao.divineapp.data.entity.constellation.Constellation;
+import com.liuzhao.divineapp.data.entity.main.MainMenu;
 import com.liuzhao.divineapp.data.local.PreferencesManager;
 import com.liuzhao.divineapp.ui.constellation.ConstellationActivity;
+import com.liuzhao.divineapp.ui.constellation.ConstellationAdapter;
 import com.liuzhao.divineapp.ui.login.LoginActivity;
 import com.liuzhao.divineapp.ui.my.UserDetailActivity;
 import com.liuzhao.divineapp.ui.setting.SettingActivity;
 import com.liuzhao.divineapp.utils.ShareUtils;
 import com.liuzhao.divineapp.utils.image.GlideImgManager;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static android.support.v7.widget.helper.ItemTouchHelper.Callback.makeMovementFlags;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 public class MainActivity extends BaseActivity
@@ -45,10 +56,13 @@ public class MainActivity extends BaseActivity
     ImageView iv_head;
     TextView tv_name;
     LinearLayout ll_homepage;
+    @BindView(R.id.grid_recycler)
+    RecyclerView mRecyclerView;
     public static final int LOGIN_SUCCESS = 101;
     public static final int LOGOUT_SUCCESS = 102;
     private MainContract.Presenter mPresenter;
     private String userId;
+    private MainMenuAdapter mAdapter;
 
     @Override
     public void setPresenter(MainContract.Presenter presenter) {
@@ -84,7 +98,6 @@ public class MainActivity extends BaseActivity
         iv_head = (ImageView) headerView.findViewById(R.id.iv_head);
         tv_name = (TextView) headerView.findViewById(R.id.tv_name);
         ll_homepage = (LinearLayout) headerView.findViewById(R.id.ll_homepage);
-
         ll_homepage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -98,6 +111,18 @@ public class MainActivity extends BaseActivity
         });
         mPresenter = new MainPresenter(MainActivity.this, this);
         refreshUi();
+        List<MainMenu> list = new ArrayList<>();
+        String[] MENU_NAME = {"八字测算", "星座运势", "八字合婚", "八字合婚", "八字合婚", "八字合婚", "八字合婚", "八字合婚", "八字合婚"};
+        int[] MENU_DRAWABLE = {R.drawable.ic_xingzuo_mojie, R.drawable.ic_xingzuo_shuiping, R.drawable.ic_xingzuo_shuangyu,
+                R.drawable.ic_xingzuo_mojie, R.drawable.ic_xingzuo_mojie, R.drawable.ic_xingzuo_mojie,
+                R.drawable.ic_xingzuo_mojie, R.drawable.ic_xingzuo_mojie, R.drawable.ic_xingzuo_mojie};
+        for (int i = 0; i < MENU_NAME.length; i++) {
+            MainMenu mainMenu = new MainMenu();
+            mainMenu.setName(MENU_NAME[i]);
+            mainMenu.setImageDrawable(MENU_DRAWABLE[i]);
+            list.add(mainMenu);
+        }
+        initRecyclerView(list);
     }
 
     @OnClick({R.id.fab})
@@ -156,7 +181,34 @@ public class MainActivity extends BaseActivity
             tv_name.setText(userResult.getNickName());
         }
         GlideImgManager.glideLoaderCircle(MainActivity.this, iconUrl, R.mipmap.user_defaut_head, R.mipmap.user_defaut_head, iv_head);
+
     }
+
+    @Override
+    public void initRecyclerView(List<MainMenu> mList) {
+        mRecyclerView.setHasFixedSize(true);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 3);
+        mRecyclerView.setLayoutManager(gridLayoutManager);
+        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        ItemTouchHelper mItemTouchHelper = new ItemTouchHelper(mItemTouchCallBack);
+        mItemTouchHelper.attachToRecyclerView(mRecyclerView);
+
+        mAdapter = new MainMenuAdapter(getApplicationContext(), mList);
+        mAdapter.setOnItemClickListener(mOnItemClickListener);
+        mRecyclerView.setAdapter(mAdapter);
+    }
+
+    private MainMenuAdapter.OnRecyclerViewItemClickListener mOnItemClickListener = new MainMenuAdapter.OnRecyclerViewItemClickListener() {
+        @Override
+        public void onItemClick(View view) {
+
+        }
+
+        @Override
+        public void onItemLongClick(View view) {
+
+        }
+    };
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -168,4 +220,95 @@ public class MainActivity extends BaseActivity
             refreshUi();
         }
     }
+
+    private ItemTouchHelper.Callback mItemTouchCallBack = new ItemTouchHelper.Callback() {
+        /**
+         * 设置滑动类型标记
+         *
+         * @param recyclerView
+         * @param viewHolder
+         * @return
+         *          返回一个整数类型的标识，用于判断Item那种移动行为是允许的
+         */
+        @Override
+        public int getMovementFlags(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
+            return makeMovementFlags(ItemTouchHelper.RIGHT | ItemTouchHelper.LEFT | ItemTouchHelper.DOWN | ItemTouchHelper.UP, 0);
+        }
+
+        @Override
+        public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+
+        }
+
+        /**
+         * Item是否支持长按拖动
+         *
+         * @return
+         *          true  支持长按操作
+         *          false 不支持长按操作
+         */
+        @Override
+        public boolean isLongPressDragEnabled() {
+            return true;
+        }
+
+        /**
+         * Item是否支持滑动
+         *
+         * @return
+         *          true  支持滑动操作
+         *          false 不支持滑动操作
+         */
+        @Override
+        public boolean isItemViewSwipeEnabled() {
+            return false;
+        }
+
+        /**
+         * 拖拽切换Item的回调
+         *
+         * @param recyclerView
+         * @param viewHolder
+         * @param target
+         * @return
+         *          如果Item切换了位置，返回true；反之，返回false
+         */
+        @Override
+        public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+            mAdapter.move(viewHolder.getAdapterPosition(), target.getAdapterPosition());
+            return true;
+        }
+
+        /**
+         * Item被选中时候回调
+         *
+         * @param viewHolder
+         * @param actionState
+         *          当前Item的状态
+         *          ItemTouchHelper.ACTION_STATE_IDLE   闲置状态
+         *          ItemTouchHelper.ACTION_STATE_SWIPE  滑动中状态
+         *          ItemTouchHelper#ACTION_STATE_DRAG   拖拽中状态
+         */
+        @Override
+        public void onSelectedChanged(RecyclerView.ViewHolder viewHolder, int actionState) {
+            //  item被选中的操作
+            if (actionState != ItemTouchHelper.ACTION_STATE_IDLE) {
+                viewHolder.itemView.setBackgroundResource(R.color.holo_gray_bright);
+            }
+            super.onSelectedChanged(viewHolder, actionState);
+        }
+
+        /**
+         * 用户操作完毕或者动画完毕后会被调用
+         *
+         * @param recyclerView
+         * @param viewHolder
+         */
+        @Override
+        public void clearView(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
+            // 操作完毕后恢复颜色
+            viewHolder.itemView.setBackgroundResource(R.color.white);
+            super.clearView(recyclerView, viewHolder);
+        }
+    };
 }

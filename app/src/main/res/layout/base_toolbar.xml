@@ -11,6 +11,7 @@
         android:layout_height="wrap_content"
         android:background="?attr/colorPrimary"
         android:fitsSystemWindows="true"
+        app:navigationIcon="@mipmap/icon_left_arrow"
         app:titleTextColor="@color/white"
         app:popupTheme="@style/AppTheme.PopupOverlay" />
 

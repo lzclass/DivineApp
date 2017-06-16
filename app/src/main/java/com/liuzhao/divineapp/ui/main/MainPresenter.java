@@ -1,7 +1,10 @@
 package com.liuzhao.divineapp.ui.main;
 
 import android.support.annotation.NonNull;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 
+import com.liuzhao.divineapp.R;
 import com.liuzhao.divineapp.data.UserRepository;
 
 /**
@@ -28,4 +31,5 @@ public class MainPresenter implements MainContract.Presenter {
     public void unsubscribe() {
 
     }
+
 }
