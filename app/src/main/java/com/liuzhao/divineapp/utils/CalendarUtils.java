@@ -1,7 +1,14 @@
 package com.liuzhao.divineapp.utils;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+
+import static com.liuzhao.divineapp.base.BaZiConstants.DiZhi;
+import static com.liuzhao.divineapp.base.BaZiConstants.TianGan;
+import static com.liuzhao.divineapp.base.BaZiConstants.jiazhi;
 
 /**
  * 工具类，实现公农历互转
@@ -342,7 +349,7 @@ public class CalendarUtils {
     final public static String getChinaHour(int hour) {
         //子时23.00－1.00 北京的时间，因为古代计时和北京时间有差别
         int time = (hour + 1) / 2;
-        String ChinaHour = SHICHEN[time]+"时";
+        String ChinaHour = SHICHEN[time] + "时";
         return ChinaHour;
     }
 
@@ -367,5 +374,75 @@ public class CalendarUtils {
      */
     final public static String getAnimalsYear(int year) {
         return animalsName[(year - 4) % 12];
+    }
+
+
+
+    /**
+     * Calendar cal 农历的
+     *
+     * @param cal  这里的时间范围是1-12，具体几点到几点是子时、丑时请参考相关文档
+     *             具体的选择如下 "子：1", "丑：2", "寅：3", "卯：4", "辰：5", "巳：6", "午：7", "未：8", "申：9", "酉：10", "戌：11", "亥：12"
+     * @author kongqz
+     */
+    public String getYearGanZhi(Calendar cal) {
+        int year = cal.get(Calendar.YEAR);
+        int month = cal.get(Calendar.MONTH) + 1;//得到月，因为从0开始的，所以要加1
+//        int day = cal.get(Calendar.DAY_OF_MONTH);//得到天
+        int hour = cal.get(Calendar.HOUR);//得到小时
+        Date baseDate = null;
+        try {
+            baseDate = new SimpleDateFormat("yyyy-MM-dd").parse("1900-1-31");
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        //1864年是甲子年，每隔六十年一个甲子
+        int idx = (year - 1864) % 60;
+        //没有过春节的话那么年还算上一年的，此处求的年份的干支
+        String y = jiazhi[idx];
+
+        String m = "";
+        String d = "";
+        String h = "";
+        idx = idx % 5;
+        int idxm = 0;
+        /**
+         * 年上起月
+         * 甲己之年丙作首，乙庚之岁戊为头，
+         * 丙辛必定寻庚起，丁壬壬位顺行流，
+         * 更有戊癸何方觅，甲寅之上好追求。
+         */
+        idxm = (idx + 1) * 2;
+        if (idxm == 10) idxm = 0;
+        //求的月份的干支
+        m = TianGan[(idxm + month - 1) % 10] + DiZhi[(month + 2 - 1) % 12];
+
+
+        /*
+         *求出和1900年1月31日甲辰日相差的天数
+         * 甲辰日是第四十天
+         */
+        int offset = (int) ((cal.getTime().getTime() - baseDate.getTime()) / 86400000L);
+        offset = (offset + 40) % 60;
+        //求的日的干支
+        d = jiazhi[offset];
+
+        /**
+         * 日上起时
+         * 甲己还生甲，乙庚丙作初，
+         * 丙辛从戊起，丁壬庚子居，
+         * 戊癸何方发，壬子是真途。
+         */
+
+        offset = (offset % 5) * 2;
+        //求得时辰的干支
+        h = TianGan[(offset + hour) % 10] + DiZhi[hour];
+        //在此处输出我们的年月日时的天干地支
+        return y + "," + m + "," + d + "," + h;
+    }
+
+    public String getShichenFromDay(int offset) {
+
+        return null;
     }
 }

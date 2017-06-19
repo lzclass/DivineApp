@@ -22,17 +22,18 @@ import com.liuzhao.divineapp.R;
 import com.liuzhao.divineapp.base.BaseActivity;
 import com.liuzhao.divineapp.data.UserRepository;
 import com.liuzhao.divineapp.data.entity.UserResult;
-import com.liuzhao.divineapp.data.entity.constellation.Constellation;
 import com.liuzhao.divineapp.data.entity.main.MainMenu;
 import com.liuzhao.divineapp.data.local.PreferencesManager;
 import com.liuzhao.divineapp.ui.constellation.ConstellationActivity;
-import com.liuzhao.divineapp.ui.constellation.ConstellationAdapter;
 import com.liuzhao.divineapp.ui.login.LoginActivity;
 import com.liuzhao.divineapp.ui.my.UserDetailActivity;
 import com.liuzhao.divineapp.ui.setting.SettingActivity;
 import com.liuzhao.divineapp.utils.ShareUtils;
+import com.liuzhao.divineapp.utils.bazi.Luozhuanglvhehun;
+import com.liuzhao.divineapp.utils.bazi.LuozhuangshengSha;
 import com.liuzhao.divineapp.utils.image.GlideImgManager;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,7 +41,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import static android.support.v7.widget.helper.ItemTouchHelper.Callback.makeMovementFlags;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 public class MainActivity extends BaseActivity
@@ -112,10 +112,9 @@ public class MainActivity extends BaseActivity
         mPresenter = new MainPresenter(MainActivity.this, this);
         refreshUi();
         List<MainMenu> list = new ArrayList<>();
-        String[] MENU_NAME = {"八字测算", "星座运势", "八字合婚", "八字合婚", "八字合婚", "八字合婚", "八字合婚", "八字合婚", "八字合婚"};
-        int[] MENU_DRAWABLE = {R.drawable.ic_xingzuo_mojie, R.drawable.ic_xingzuo_shuiping, R.drawable.ic_xingzuo_shuangyu,
-                R.drawable.ic_xingzuo_mojie, R.drawable.ic_xingzuo_mojie, R.drawable.ic_xingzuo_mojie,
-                R.drawable.ic_xingzuo_mojie, R.drawable.ic_xingzuo_mojie, R.drawable.ic_xingzuo_mojie};
+        String[] MENU_NAME = {"八字测算", "星座运势", "八字合婚", "风生水起", "姓名测试", "配对测算", "手写坊"};
+        int[] MENU_DRAWABLE = {R.mipmap.icon_menu_bazi, R.drawable.ic_xingzuo_baiyang, R.drawable.ic_xingzuo_baiyang,
+                R.drawable.ic_xingzuo_baiyang, R.drawable.ic_xingzuo_baiyang, R.drawable.ic_xingzuo_baiyang, R.drawable.ic_xingzuo_baiyang};
         for (int i = 0; i < MENU_NAME.length; i++) {
             MainMenu mainMenu = new MainMenu();
             mainMenu.setName(MENU_NAME[i]);
@@ -123,6 +122,12 @@ public class MainActivity extends BaseActivity
             list.add(mainMenu);
         }
         initRecyclerView(list);
+        LuozhuangshengSha luozhuangshengSha = new LuozhuangshengSha();
+        try {
+            luozhuangshengSha.paipan("1991-02-02 02", Luozhuanglvhehun.sex.man);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 
     @OnClick({R.id.fab})
