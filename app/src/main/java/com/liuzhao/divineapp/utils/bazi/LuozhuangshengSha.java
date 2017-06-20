@@ -7,7 +7,8 @@ package com.liuzhao.divineapp.utils.bazi;
 import java.text.ParseException;
 import java.util.Calendar;
 
-/**流年 四柱 大运神煞排盘
+/**
+ * 流年 四柱 大运神煞排盘
  *
  * @author luozhuang 大师♂罗莊
  */
@@ -29,6 +30,7 @@ public class LuozhuangshengSha {
         }
         return 0;
     }
+
     public String[] dizhi = {"　", "子", "丑", "寅", "卯", "辰", "巳", "午", "未", "申", "酉", "戌", "亥"};
 
     /**
@@ -38,7 +40,7 @@ public class LuozhuangshengSha {
      * @return 序号
      */
     public int dizhiOrder(String paramString) {
-        for (int i1 = 1;; i1++) {
+        for (int i1 = 1; ; i1++) {
             if (i1 > 12) {
                 i1 = 0;
                 return i1;
@@ -47,6 +49,7 @@ public class LuozhuangshengSha {
             }
         }
     }
+
     public String[] jiazi = {"　", "甲子", "乙丑", "丙寅", "丁卯", "戊辰", "己巳", "庚午", "辛未", "壬申", "癸酉", "甲戌", "乙亥", "丙子", "丁丑", "戊寅", "己卯", "庚辰", "辛巳", "壬午", "癸未", "甲申", "乙酉", "丙戌", "丁亥", "戊子", "己丑", "庚寅", "辛卯", "壬辰", "癸巳", "甲午", "乙未", "丙申", "丁酉", "戊戌", "己亥", "庚子", "辛丑", "壬寅", "癸卯", "甲辰", "乙巳", "丙午", "丁未", "戊申", "己酉", "庚戌", "辛亥", "壬子", "癸丑", "甲寅", "乙卯", "丙辰", "丁巳", "戊午", "己未", "庚申", "辛酉", "壬戌", "癸亥"};
 
     /**
@@ -57,7 +60,7 @@ public class LuozhuangshengSha {
      */
     public int chaxunjiazishunxu(String paramString) {
 
-        for (int i1 = 1;; i1++) {
+        for (int i1 = 1; ; i1++) {
             if (i1 > 60) {
                 i1 = 0;
                 return i1;
@@ -84,43 +87,42 @@ public class LuozhuangshengSha {
 
 
     /**
-     *
      * @param yeararray 年数组
-     * @param bazi 此人八字
-     * @param isman 男人么
+     * @param bazi      此人八字
+     * @param isman     男人么
      * @return
      */
     public String[] liunianshensha(int[] yeararray, String[] bazi, Luozhuanglvhehun.sex isman) {
 
-        String[] stringarray=new String[yeararray.length];
-        for (int i2 = 0;i2<yeararray.length; i2++) {
-            stringarray[i2]=quickgetnianzhu(yeararray[i2]);
+        String[] stringarray = new String[yeararray.length];
+        for (int i2 = 0; i2 < yeararray.length; i2++) {
+            stringarray[i2] = quickgetnianzhu(yeararray[i2]);
 
         }
-        return liunianshensha(yeararray,stringarray, bazi,isman);
+        return liunianshensha(yeararray, stringarray, bazi, isman);
     }
 
 
     /**
      * @param yearintarray 年数组数字形式
-     * @param yeararray 年数组
-     * @param bazi 此人八字
-     * @param isman 男人么
+     * @param yeararray    年数组
+     * @param bazi         此人八字
+     * @param isman        男人么
      * @return
      */
-    private String[] liunianshensha(int[] yearintarray,String[] yeararray, String[] bazi, Luozhuanglvhehun.sex isman) {
+    private String[] liunianshensha(int[] yearintarray, String[] yeararray, String[] bazi, Luozhuanglvhehun.sex isman) {
         int ah;//年柱在六十甲子中的顺序
 
         ah = chaxunjiazishunxu(bazi[1] + bazi[2]);
 
-        String[] returnarray =new String[yeararray.length];
-        for (int i2 = 0;; i2++) {
+        String[] returnarray = new String[yeararray.length];
+        for (int i2 = 0; ; i2++) {
 
             if (i2 >= yeararray.length) {
                 return returnarray;
             }
 
-            returnarray[i2] = (yearintarray[i2] +yeararray[i2]
+            returnarray[i2] = (yearintarray[i2] + yeararray[i2]
                     + "　　神煞：" + shengshadayun(yeararray[i2], bazi, isman) + "\n");
         }
     }
@@ -129,12 +131,12 @@ public class LuozhuangshengSha {
      * 排大运或者年份神杀
      *
      * @param yearjiazi 年分八字
-     * @param bazi 此人八字四柱 arrayOfString[1] = bazi[1];//年干 arrayOfString[2] =
-     * bazi[2];//年支 arrayOfString[3] = bazi[3];//月干 arrayOfString[4] =
-     * bazi[4];//月支 arrayOfString[5] = bazi[5];//日干 arrayOfString[6] =
-     * bazi[6];//日支 arrayOfString[7] = bazi[7];//时干 arrayOfString[8] =
-     * bazi[8];//时支
-     * @param isman 男人么
+     * @param bazi      此人八字四柱 arrayOfString[1] = bazi[1];//年干 arrayOfString[2] =
+     *                  bazi[2];//年支 arrayOfString[3] = bazi[3];//月干 arrayOfString[4] =
+     *                  bazi[4];//月支 arrayOfString[5] = bazi[5];//日干 arrayOfString[6] =
+     *                  bazi[6];//日支 arrayOfString[7] = bazi[7];//时干 arrayOfString[8] =
+     *                  bazi[8];//时支
+     * @param isman     男人么
      * @return 神煞
      */
     public String shengshadayun(String yearjiazi, String[] bazi, Luozhuanglvhehun.sex isman) {
@@ -233,11 +235,11 @@ public class LuozhuangshengSha {
     /**
      * 排四柱神杀
      *
-     * @param bazi 此人八字四柱 arrayOfString[1] = bazi[1];//年干 arrayOfString[2] =
-     * bazi[2];//年支 arrayOfString[3] = bazi[3];//月干 arrayOfString[4] =
-     * bazi[4];//月支 arrayOfString[5] = bazi[5];//日干 arrayOfString[6] =
-     * bazi[6];//日支 arrayOfString[7] = bazi[7];//时干 arrayOfString[8] =
-     * bazi[8];//时支
+     * @param bazi  此人八字四柱 arrayOfString[1] = bazi[1];//年干 arrayOfString[2] =
+     *              bazi[2];//年支 arrayOfString[3] = bazi[3];//月干 arrayOfString[4] =
+     *              bazi[4];//月支 arrayOfString[5] = bazi[5];//日干 arrayOfString[6] =
+     *              bazi[6];//日支 arrayOfString[7] = bazi[7];//时干 arrayOfString[8] =
+     *              bazi[8];//时支
      * @param isman 男人么
      * @return 神煞
      */
@@ -254,7 +256,7 @@ public class LuozhuangshengSha {
         arrayOfString[7] = bazi[7];//时干
         arrayOfString[8] = bazi[8];//时支
         String returnstring = "";
-        for (int i1 = 1;; i1++) {
+        for (int i1 = 1; ; i1++) {
             if (i1 > 8) {
                 return returnstring;
             }
@@ -408,7 +410,6 @@ public class LuozhuangshengSha {
             }
 
 
-
             if ((yuancheng(arrayOfString[2], arrayOfString[i1], Manorwoman(isman), dizhiOrder(bazi[2]) % 2) == 1) && (i1 >= 4)) {
                 returnstring += "元辰 ";
 
@@ -481,7 +482,8 @@ public class LuozhuangshengSha {
      * @return
      */
     public int kongwang(String paramString1, String paramString2) {
-        if ((chaxunjiazishunxu(paramString1) <= 10) && ((paramString2.equals("戌")) || (paramString2.equals("亥"))));
+        if ((chaxunjiazishunxu(paramString1) <= 10) && ((paramString2.equals("戌")) || (paramString2.equals("亥"))))
+            ;
         if (((chaxunjiazishunxu(paramString1) > 10) && (chaxunjiazishunxu(paramString1) <= 20) && ((paramString2.equals("申")) || (paramString2.equals("酉")))) || ((chaxunjiazishunxu(paramString1) > 20) && (chaxunjiazishunxu(paramString1) <= 30) && ((paramString2.equals("午")) || (paramString2.equals("未")))) || ((chaxunjiazishunxu(paramString1) > 30) && (chaxunjiazishunxu(paramString1) <= 40) && ((paramString2.equals("辰")) || (paramString2.equals("巳")))) || ((chaxunjiazishunxu(paramString1) > 40) && (chaxunjiazishunxu(paramString1) <= 50) && ((paramString2.equals("寅")) || (paramString2.equals("卯")))) || ((chaxunjiazishunxu(paramString1) > 50) && ((paramString2.equals("子")) || (paramString2.equals("丑"))))) {
             return 1;
         }
@@ -969,7 +971,6 @@ public class LuozhuangshengSha {
         }
 
 
-
         return 0;
     }
 
@@ -1146,7 +1147,8 @@ public class LuozhuangshengSha {
     }
 
     public int yuancheng(String paramString1, String paramString2, int paramInt1, int paramInt2) {
-        if ((paramString1.equals("子")) && (paramString2.equals("未")) && (((paramInt1 == 1) && (paramInt2 == 1)) || ((paramInt1 == 0) && (paramInt2 == 0))));
+        if ((paramString1.equals("子")) && (paramString2.equals("未")) && (((paramInt1 == 1) && (paramInt2 == 1)) || ((paramInt1 == 0) && (paramInt2 == 0))))
+            ;
         while (((paramString1.equals("丑")) && (paramString2.equals("申")) && (((paramInt1 == 1) && (paramInt2 == 1)) || ((paramInt1 == 0) && (paramInt2 == 0)))) || ((paramString1.equals("寅")) && (paramString2.equals("酉")) && (((paramInt1 == 1) && (paramInt2 == 1)) || ((paramInt1 == 0) && (paramInt2 == 0)))) || ((paramString1.equals("卯")) && (paramString2.equals("戌")) && (((paramInt1 == 1) && (paramInt2 == 1)) || ((paramInt1 == 0) && (paramInt2 == 0)))) || ((paramString1.equals("辰")) && (paramString2.equals("亥")) && (((paramInt1 == 1) && (paramInt2 == 1)) || ((paramInt1 == 0) && (paramInt2 == 0)))) || ((paramString1.equals("巳")) && (paramString2.equals("子")) && (((paramInt1 == 1) && (paramInt2 == 1)) || ((paramInt1 == 0) && (paramInt2 == 0)))) || ((paramString1.equals("午")) && (paramString2.equals("丑")) && (((paramInt1 == 1) && (paramInt2 == 1)) || ((paramInt1 == 0) && (paramInt2 == 0)))) || ((paramString1.equals("未")) && (paramString2.equals("寅")) && (((paramInt1 == 1) && (paramInt2 == 1)) || ((paramInt1 == 0) && (paramInt2 == 0)))) || ((paramString1.equals("申")) && (paramString2.equals("卯")) && (((paramInt1 == 1) && (paramInt2 == 1)) || ((paramInt1 == 0) && (paramInt2 == 0)))) || ((paramString1.equals("酉")) && (paramString2.equals("辰")) && (((paramInt1 == 1) && (paramInt2 == 1)) || ((paramInt1 == 0) && (paramInt2 == 0)))) || ((paramString1.equals("戌")) && (paramString2.equals("巳")) && (((paramInt1 == 1) && (paramInt2 == 1)) || ((paramInt1 == 0) && (paramInt2 == 0)))) || ((paramString1.equals("亥")) && (paramString2.equals("午")) && (((paramInt1 == 1) && (paramInt2 == 1)) || ((paramInt1 == 0) && (paramInt2 == 0)))) || ((paramString1.equals("子")) && (paramString2.equals("巳")) && (((paramInt1 == 1) && (paramInt2 == 0)) || ((paramInt1 == 0) && (paramInt2 == 1)))) || ((paramString1.equals("丑")) && (paramString2.equals("午")) && (((paramInt1 == 1) && (paramInt2 == 0)) || ((paramInt1 == 0) && (paramInt2 == 1)))) || ((paramString1.equals("寅")) && (paramString2.equals("未")) && (((paramInt1 == 1) && (paramInt2 == 0)) || ((paramInt1 == 0) && (paramInt2 == 1)))) || ((paramString1.equals("卯")) && (paramString2.equals("申")) && (((paramInt1 == 1) && (paramInt2 == 0)) || ((paramInt1 == 0) && (paramInt2 == 1)))) || ((paramString1.equals("辰")) && (paramString2.equals("酉")) && (((paramInt1 == 1) && (paramInt2 == 0)) || ((paramInt1 == 0) && (paramInt2 == 1)))) || ((paramString1.equals("巳")) && (paramString2.equals("戌")) && (((paramInt1 == 1) && (paramInt2 == 0)) || ((paramInt1 == 0) && (paramInt2 == 1)))) || ((paramString1.equals("午")) && (paramString2.equals("亥")) && (((paramInt1 == 1) && (paramInt2 == 0)) || ((paramInt1 == 0) && (paramInt2 == 1)))) || ((paramString1.equals("未")) && (paramString2.equals("子")) && (((paramInt1 == 1) && (paramInt2 == 0)) || ((paramInt1 == 0) && (paramInt2 == 1)))) || ((paramString1.equals("申")) && (paramString2.equals("丑")) && (((paramInt1 == 1) && (paramInt2 == 0)) || ((paramInt1 == 0) && (paramInt2 == 1)))) || ((paramString1.equals("酉")) && (paramString2.equals("寅")) && (((paramInt1 == 1) && (paramInt2 == 0)) || ((paramInt1 == 0) && (paramInt2 == 1)))) || ((paramString1.equals("戌")) && (paramString2.equals("卯")) && (((paramInt1 == 1) && (paramInt2 == 0)) || ((paramInt1 == 0) && (paramInt2 == 1)))) || ((paramString1.equals("亥")) && (paramString2.equals("辰")) && (((paramInt1 == 1) && (paramInt2 == 0)) || ((paramInt1 == 0) && (paramInt2 == 1))))) {
             return 1;
         }
@@ -1694,7 +1696,8 @@ public class LuozhuangshengSha {
         return 0;
     }
 
-    /**排勾绞煞用顺序
+    /**
+     * 排勾绞煞用顺序
      *
      * @param order 顺序
      * @return
@@ -1711,7 +1714,6 @@ public class LuozhuangshengSha {
     }
 
     /**
-     *
      * @param man 生日 yyyy-MM-dd HH
      * @return
      * @throws ParseException
@@ -1732,9 +1734,9 @@ public class LuozhuangshengSha {
     }
 
     private String paipan(Calendar cal, Luozhuanglvhehun.sex isman) throws ParseException {
-
+        String paipanString;
         BaZiUtils lunar = new BaZiUtils(cal);
-        System.out.println("此人农历的日期【" + lunar.toString() + "】");
+        paipanString = "农历【" + lunar.toString() + "】";
         /**
          * 很多地方都是按照23：00-1：00为子时这是不对的。
          * 子时24.00－2.00,丑时2.00－4.00,寅时4.00－6.00,卯时6.00－8.00,
@@ -1743,10 +1745,9 @@ public class LuozhuangshengSha {
          *
          */
         int time = cal.get(Calendar.HOUR_OF_DAY) / 2;
-        System.out.println("此人八字【" + lunar.getYearGanZhi(time) + "】");
+        paipanString = paipanString + "八字【" + lunar.getYearGanZhi(time) + "】";
         //获取生肖
-        System.out.println("此人的农历生肖【" + lunar.animalsYear() + "】");
-
+        paipanString = paipanString + "生肖【" + lunar.animalsYear() + "】";
 
 
         String GanZhi = lunar.getYearGanZhi(time);//取八字
@@ -1763,16 +1764,7 @@ public class LuozhuangshengSha {
         String soundmonth = myLuozhuangshenshaHehun.getnumsix(ganzimonth);
         String soundday = myLuozhuangshenshaHehun.getnumsix(ganziday);
         String soundtime = myLuozhuangshenshaHehun.getnumsix(ganzitime);
-        System.out.println("五行纳音");
-        System.out.print(soundyear);
-        System.out.print(" ");
-        System.out.print(soundmonth);
-        System.out.print(" ");
-        System.out.print(soundday);
-        System.out.print(" ");
-        System.out.print(soundtime);
-        System.out.print(" ");
-        System.out.println("");
+        paipanString = paipanString + "五行纳音" + soundyear + " " + soundmonth + " " + soundday + " " + soundtime;
 
         String[] arrayOfString = new String[9];
 
@@ -1785,9 +1777,9 @@ public class LuozhuangshengSha {
         arrayOfString[6] = ganziday.substring(1, 2);//日支
         arrayOfString[7] = ganzitime.substring(0, 1);//时干
         arrayOfString[8] = ganzitime.substring(1, 2);//时支
-        System.out.println(shengsha(arrayOfString, isman));
+        paipanString = paipanString + shengsha(arrayOfString, isman);
 
-        System.out.println("此人大运神煞");
+        paipanString = paipanString + "大运神煞";
 
 
         String[] DayunArray = myLuozhuangpaipandayun.Dayun(ganziyear, ganzimonth, isman);
@@ -1797,23 +1789,29 @@ public class LuozhuangshengSha {
 
             DayunArrayshengsha[i] = shengshadayun(DayunArray[i], arrayOfString, isman);
         }
-        System.out.println("此人大运");
+        paipanString = paipanString + "大运";
 
 
-        System.out.println("此人大运神煞");
-        myLuozhuangpaipandayun.pringst(DayunArrayshengsha);
+        paipanString = paipanString + "大运神煞";
+        paipanString = paipanString + pringst(DayunArrayshengsha);
 
-        System.out.println("此人流年");
+        paipanString = paipanString + "流年";
 
-        int[] liunianarray=new int[80];
-        int start =lunar.getnumberYear();
+        int[] liunianarray = new int[80];
+        int start = lunar.getnumberYear();
         start++;
         for (int i = 0; i < liunianarray.length; i++) {
-
-            liunianarray[i]=start+i;
+            liunianarray[i] = start + i;
         }
-        myLuozhuangpaipandayun.pringst(liunianshensha(liunianarray, arrayOfString, isman));
-        return null;
+        paipanString = paipanString + pringst(liunianshensha(liunianarray, arrayOfString, isman));
+        return paipanString;
     }
 
+    public static String pringst(String[] res) {
+        String ping = "";
+        for (int i = 0; i < res.length; i++) {
+            ping = ping + res[i] + " ";
+        }
+        return ping;
+    }
 }

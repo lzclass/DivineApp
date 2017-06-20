@@ -25,5 +25,4 @@ public interface ZhiHuService {
     //体育日报
     @GET("/api/4/theme/8")
     Observable<RootEntity> getSport();
-
 }

@@ -38,15 +38,15 @@ dependencies {
     compile 'com.jakewharton.rxbinding:rxbinding-appcompat-v7:0.3.0'
     compile 'com.jakewharton.rxbinding:rxbinding-design:0.3.0'
     // Retrofit依赖部分
-    compile 'com.google.code.gson:gson:2.5'
+//    compile 'com.google.code.gson:gson:2.5'
     // gson
     compile 'com.squareup.retrofit2:retrofit:2.0.1'
     // retrofit
-    compile 'com.squareup.retrofit2:converter-gson:2.0.0-beta4'
-    compile 'com.squareup.retrofit2:adapter-rxjava:2.0.1'
-    compile 'com.squareup.retrofit2:converter-scalars:2.0.0'
-    compile 'com.squareup.okhttp3:logging-interceptor:3.1.2'
-    compile 'com.squareup.okhttp3:okhttp:3.1.2'
+    compile 'com.squareup.retrofit2:retrofit:2.0.2'
+    compile 'com.squareup.retrofit2:converter-gson:2.0.2'
+    compile 'com.squareup.retrofit2:adapter-rxjava:2.0.2'
+    compile 'com.squareup.okhttp3:logging-interceptor:3.2.0'
+//    compile 'com.squareup.okhttp3:okhttp:3.1.2'
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile files('libs/umeng_social_tool.jar')
     compile files('libs/umeng_social_net.jar')

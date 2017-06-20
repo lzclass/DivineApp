@@ -167,12 +167,5 @@ public class Luozhuangpaipandayun {
 //        return null;
 //    }
 
-    public static void pringst(String[] res) {
-        for (int i = 0; i < res.length; i++) {
-            System.out.print(res[i]);
-            System.out.print("   ");
-        }
-        System.out.println("");
-    }
 
 }

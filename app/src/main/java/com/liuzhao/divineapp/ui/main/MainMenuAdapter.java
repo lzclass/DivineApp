@@ -18,16 +18,16 @@ import java.util.List;
  * Created by liuzhao on 2017/6/15.
  */
 
-public class MainMenuAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements View.OnClickListener, View.OnLongClickListener {
+public class MainMenuAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private Context mContext;
     private List<MainMenu> datas;//数据
 
     //自定义监听事件
     public interface OnRecyclerViewItemClickListener {
-        void onItemClick(View view);
+        void onItemClick(View view, int position);
 
-        void onItemLongClick(View view);
+        void onItemLongClick(View view, int position);
     }
 
     private OnRecyclerViewItemClickListener mOnItemClickListener = null;
@@ -47,21 +47,36 @@ public class MainMenuAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(mContext).inflate(R.layout.adapter_item_main_menu, parent, false);
         MyViewHolder holder = new MyViewHolder(view);
-        //给布局设置点击和长点击监听
-        view.setOnClickListener(this);
-        view.setOnLongClickListener(this);
+
         return holder;
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         //将数据与item视图进行绑定，如果是MyViewHolder就加载网络图片，如果是MyViewHolder2就显示页数
 //        if (holder instanceof MyViewHolder) {
         MyViewHolder myViewHolder = (MyViewHolder) holder;
         MainMenu mainMenu = datas.get(position);
         myViewHolder.iv_icon.setBackgroundResource(mainMenu.getImageDrawable());
         myViewHolder.tv_name.setText(mainMenu.getName());
-//        }
+        //给布局设置点击和长点击监听
+        myViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mOnItemClickListener != null) {
+                    mOnItemClickListener.onItemClick(v, position);
+                }
+            }
+        });
+        myViewHolder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                if (mOnItemClickListener != null) {
+                    mOnItemClickListener.onItemLongClick(v, position);
+                }
+                return false;
+            }
+        });
 
     }
 
@@ -70,21 +85,6 @@ public class MainMenuAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         return datas.size();//获取数据的个数
     }
 
-    //点击事件回调
-    @Override
-    public void onClick(View v) {
-        if (mOnItemClickListener != null) {
-            mOnItemClickListener.onItemClick(v);
-        }
-    }
-
-    @Override
-    public boolean onLongClick(View v) {
-        if (mOnItemClickListener != null) {
-            mOnItemClickListener.onItemLongClick(v);
-        }
-        return false;
-    }
 
     //自定义ViewHolder，用于加载图片
     class MyViewHolder extends RecyclerView.ViewHolder {

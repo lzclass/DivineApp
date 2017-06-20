@@ -24,16 +24,14 @@ import com.liuzhao.divineapp.data.UserRepository;
 import com.liuzhao.divineapp.data.entity.UserResult;
 import com.liuzhao.divineapp.data.entity.main.MainMenu;
 import com.liuzhao.divineapp.data.local.PreferencesManager;
+import com.liuzhao.divineapp.ui.bazitest.BaZiTestActivity;
 import com.liuzhao.divineapp.ui.constellation.ConstellationActivity;
 import com.liuzhao.divineapp.ui.login.LoginActivity;
 import com.liuzhao.divineapp.ui.my.UserDetailActivity;
 import com.liuzhao.divineapp.ui.setting.SettingActivity;
 import com.liuzhao.divineapp.utils.ShareUtils;
-import com.liuzhao.divineapp.utils.bazi.Luozhuanglvhehun;
-import com.liuzhao.divineapp.utils.bazi.LuozhuangshengSha;
 import com.liuzhao.divineapp.utils.image.GlideImgManager;
 
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -122,12 +120,7 @@ public class MainActivity extends BaseActivity
             list.add(mainMenu);
         }
         initRecyclerView(list);
-        LuozhuangshengSha luozhuangshengSha = new LuozhuangshengSha();
-        try {
-            luozhuangshengSha.paipan("1991-02-02 02", Luozhuanglvhehun.sex.man);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+
     }
 
     @OnClick({R.id.fab})
@@ -205,12 +198,15 @@ public class MainActivity extends BaseActivity
 
     private MainMenuAdapter.OnRecyclerViewItemClickListener mOnItemClickListener = new MainMenuAdapter.OnRecyclerViewItemClickListener() {
         @Override
-        public void onItemClick(View view) {
-
+        public void onItemClick(View view, int position) {
+            if (position == 0) {
+                startActivity(new Intent(MainActivity.this, BaZiTestActivity.class));
+                return;
+            }
         }
 
         @Override
-        public void onItemLongClick(View view) {
+        public void onItemLongClick(View view, int position) {
 
         }
     };
