@@ -17,6 +17,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.liuzhao.divineapp.R;
 import com.liuzhao.divineapp.base.BaseActivity;
@@ -24,6 +25,10 @@ import com.liuzhao.divineapp.data.UserRepository;
 import com.liuzhao.divineapp.data.entity.UserResult;
 import com.liuzhao.divineapp.data.entity.main.MainMenu;
 import com.liuzhao.divineapp.data.local.PreferencesManager;
+import com.liuzhao.divineapp.data.net.BaseSubscriber;
+import com.liuzhao.divineapp.data.net.ExceptionHandle;
+import com.liuzhao.divineapp.data.net.IpResult;
+import com.liuzhao.divineapp.data.net.RetrofitClient;
 import com.liuzhao.divineapp.ui.bazitest.BaZiTestActivity;
 import com.liuzhao.divineapp.ui.constellation.ConstellationActivity;
 import com.liuzhao.divineapp.ui.login.LoginActivity;
@@ -33,11 +38,14 @@ import com.liuzhao.divineapp.utils.ShareUtils;
 import com.liuzhao.divineapp.utils.image.GlideImgManager;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import okhttp3.ResponseBody;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -146,8 +154,26 @@ public class MainActivity extends BaseActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.nav_1:
+                Map<String, String> maps = new HashMap<>();
+                maps.put("ip", "21.22.11.33");
+                //"http://ip.taobao.com/service/getIpInfo.php?ip=21.22.11.33";
+                RetrofitClient.getInstance(MainActivity.this).createBaseApi().post("service/getIpInfo.php"
+                        , maps, new BaseSubscriber<ResponseBody>(MainActivity.this) {
+
+                            @Override
+                            public void onError(ExceptionHandle.ResponeThrowable e) {
+                                Toast.makeText(MainActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
+
+                            }
+
+                            @Override
+                            public void onNext(ResponseBody responseBody) {
+                                Toast.makeText(MainActivity.this, responseBody.toString(), Toast.LENGTH_LONG).show();
+                            }
+                        });
                 break;
             case R.id.nav_2:
+
                 break;
             case R.id.nav_share:
                 ShareUtils.shareText(MainActivity.this);
