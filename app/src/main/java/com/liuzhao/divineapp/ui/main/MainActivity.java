@@ -159,7 +159,7 @@ public class MainActivity extends BaseActivity
                 Map<String, String> map = new HashMap<>();
                 map.put("sort", "asc");
                 map.put("time", "time");
-                map.put("page", "1");//新版登录必填
+                map.put("page", "1");
                 map.put("pagesize", "20");
                 map.put("key", "0c2775b5d1c7ecd8430e49449ea4ec43");
                 RetrofitClient.getInstance(MainActivity.this).createBaseApi().get("joke/content/list.from", map, new BaseSubscriber<LoginResult>(MainActivity.this) {
