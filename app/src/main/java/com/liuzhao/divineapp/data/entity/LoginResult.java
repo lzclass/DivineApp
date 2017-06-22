@@ -6,12 +6,9 @@ import com.liuzhao.divineapp.data.entity.main.Joke;
 import java.util.List;
 
 /**
- * 
- * @description 用户登录返回实体
- * @author LiXiaoSong
- * @date 2015-10-29
+ *
  */
-public class LoginResult extends BaseResult {
+public class LoginResult extends BaseResult<LoginResult> {
 
 	private static final long serialVersionUID = 1L;
 	private List<Joke> data;

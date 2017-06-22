@@ -26,8 +26,9 @@ import rx.Observable;
 public interface BaseApiService {
 
     String Base_URL = "http://japi.juhe.cn/";
+
     /**
-     *普通写法
+     * 普通写法
      */
     @GET("service/getIpInfo.php/")
     Observable<ResponseBody> getData(@Query("ip") String ip);

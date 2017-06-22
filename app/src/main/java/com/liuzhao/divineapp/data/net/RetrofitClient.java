@@ -43,24 +43,10 @@ public class RetrofitClient {
     private Cache cache = null;
     private File httpCacheDirectory;
 
-
-    private static Retrofit.Builder builder =
-            new Retrofit.Builder()
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-                    .baseUrl(baseUrl);
-    private static OkHttpClient.Builder httpClient =
-            new OkHttpClient.Builder()
-                    .addNetworkInterceptor(
-                            new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.HEADERS))
-                    .connectTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS);
-
-
     private static class SingletonHolder {
         private static RetrofitClient INSTANCE = new RetrofitClient(
                 mContext);
     }
-
     public static RetrofitClient getInstance(Context context) {
         if (context != null) {
             mContext = context;
@@ -116,12 +102,11 @@ public class RetrofitClient {
         }
         okHttpClient = new OkHttpClient.Builder()
                 .addNetworkInterceptor(
-                        new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
+                        new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.HEADERS))
                 .cookieJar(new NovateCookieManger(context))
-                .cache(cache)
+//                .cache(cache)
                 .addInterceptor(new BaseInterceptor(headers))
-                .addInterceptor(new CaheInterceptor(context))
-                .addNetworkInterceptor(new CaheInterceptor(context))
+//                .addInterceptor(new CaheInterceptor(context))
                 .connectTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS)
                 .writeTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS)
                 .connectionPool(new ConnectionPool(8, 15, TimeUnit.SECONDS))
@@ -133,40 +118,8 @@ public class RetrofitClient {
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .baseUrl(url)
                 .build();
-
+//        apiService = retrofit.create(BaseApiService.class);
     }
-
-    /**
-     * ApiBaseUrl
-     *
-     * @param newApiBaseUrl
-     */
-    public static void changeApiBaseUrl(String newApiBaseUrl) {
-        baseUrl = newApiBaseUrl;
-        builder = new Retrofit.Builder()
-                .addConverterFactory(GsonConverterFactory.create())
-                .baseUrl(baseUrl);
-    }
-
-    /**
-     * addcookieJar
-     */
-    public static void addCookie() {
-        okHttpClient.newBuilder().cookieJar(new NovateCookieManger(mContext)).build();
-        retrofit = builder.client(okHttpClient).build();
-    }
-
-    /**
-     * ApiBaseUrl
-     *
-     * @param newApiHeaders
-     */
-    public static void changeApiHeader(Map<String, String> newApiHeaders) {
-
-        okHttpClient.newBuilder().addInterceptor(new BaseInterceptor(newApiHeaders)).build();
-        builder.client(httpClient.build()).build();
-    }
-
     /**
      * create BaseApi  defalte ApiManager
      *

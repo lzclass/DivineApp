@@ -1,6 +1,9 @@
 package com.liuzhao.divineapp.data.entity;
 
+import com.liuzhao.divineapp.data.entity.main.Joke;
+
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * 接口通用字段父类，外层解析需继承
@@ -26,4 +29,27 @@ public class BaseResult<T> implements Serializable {
 
     public T result;
 
+    public int getError_code() {
+        return error_code;
+    }
+
+    public void setError_code(int error_code) {
+        this.error_code = error_code;
+    }
+
+    public String getReason() {
+        return reason;
+    }
+
+    public void setReason(String reason) {
+        this.reason = reason;
+    }
+
+    public T getResult() {
+        return result;
+    }
+
+    public void setResult(T result) {
+        this.result = result;
+    }
 }

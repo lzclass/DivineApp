@@ -158,7 +158,7 @@ public class MainActivity extends BaseActivity
             case R.id.nav_1:
                 Map<String, String> map = new HashMap<>();
                 map.put("sort", "asc");
-                map.put("time", "time");
+                map.put("time", "1418816972");
                 map.put("page", "1");
                 map.put("pagesize", "20");
                 map.put("key", "0c2775b5d1c7ecd8430e49449ea4ec43");
