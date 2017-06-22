@@ -22,12 +22,15 @@ import android.widget.Toast;
 import com.liuzhao.divineapp.R;
 import com.liuzhao.divineapp.base.BaseActivity;
 import com.liuzhao.divineapp.data.UserRepository;
+import com.liuzhao.divineapp.data.entity.BaseResult;
+import com.liuzhao.divineapp.data.entity.LoginResult;
 import com.liuzhao.divineapp.data.entity.UserResult;
 import com.liuzhao.divineapp.data.entity.main.MainMenu;
 import com.liuzhao.divineapp.data.local.PreferencesManager;
+import com.liuzhao.divineapp.data.net.BaseApiService;
 import com.liuzhao.divineapp.data.net.BaseSubscriber;
 import com.liuzhao.divineapp.data.net.ExceptionHandle;
-import com.liuzhao.divineapp.data.net.IpResult;
+import com.liuzhao.divineapp.data.net.MyApiService;
 import com.liuzhao.divineapp.data.net.RetrofitClient;
 import com.liuzhao.divineapp.ui.bazitest.BaZiTestActivity;
 import com.liuzhao.divineapp.ui.constellation.ConstellationActivity;
@@ -45,7 +48,6 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import okhttp3.ResponseBody;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -154,11 +156,31 @@ public class MainActivity extends BaseActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.nav_1:
-                Map<String, String> maps = new HashMap<>();
-                maps.put("ip", "21.22.11.33");
-                //"http://ip.taobao.com/service/getIpInfo.php?ip=21.22.11.33";
-                RetrofitClient.getInstance(MainActivity.this).createBaseApi().post("service/getIpInfo.php"
-                        , maps, new BaseSubscriber<ResponseBody>(MainActivity.this) {
+                Map<String, String> map = new HashMap<>();
+                map.put("sort", "asc");
+                map.put("time", "time");
+                map.put("page", "1");//新版登录必填
+                map.put("pagesize", "20");
+                map.put("key", "0c2775b5d1c7ecd8430e49449ea4ec43");
+                RetrofitClient.getInstance(MainActivity.this).createBaseApi().get("joke/content/list.from", map, new BaseSubscriber<LoginResult>(MainActivity.this) {
+                    @Override
+                    public void onError(ExceptionHandle.ResponeThrowable e) {
+                        Toast.makeText(MainActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
+                    }
+
+                    @Override
+                    public void onNext(LoginResult loginResult) {
+                        Toast.makeText(MainActivity.this, loginResult.toString(), Toast.LENGTH_LONG).show();
+                    }
+                });
+                break;
+            case R.id.nav_2:
+
+                MyApiService service1 = RetrofitClient.getInstance(MainActivity.this).create(MyApiService.class);
+
+                // execute and add observable to RxJava
+                RetrofitClient.getInstance(MainActivity.this).execute(
+                        service1.getJoke("asc", "1418816972", 1, 20), new BaseSubscriber<LoginResult>(MainActivity.this) {
 
                             @Override
                             public void onError(ExceptionHandle.ResponeThrowable e) {
@@ -167,13 +189,12 @@ public class MainActivity extends BaseActivity
                             }
 
                             @Override
-                            public void onNext(ResponseBody responseBody) {
-                                Toast.makeText(MainActivity.this, responseBody.toString(), Toast.LENGTH_LONG).show();
+                            public void onNext(LoginResult loginResult) {
+
+                                Toast.makeText(MainActivity.this, loginResult.toString(), Toast.LENGTH_LONG).show();
+
                             }
                         });
-                break;
-            case R.id.nav_2:
-
                 break;
             case R.id.nav_share:
                 ShareUtils.shareText(MainActivity.this);

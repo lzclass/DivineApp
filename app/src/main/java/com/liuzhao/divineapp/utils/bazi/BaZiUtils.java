@@ -1,6 +1,6 @@
 package com.liuzhao.divineapp.utils.bazi;
 
-import com.liuzhao.divineapp.base.BaZiConstants;
+import com.liuzhao.divineapp.config.BaZiConstants;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

@@ -4,6 +4,8 @@ import android.content.Context;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.liuzhao.divineapp.data.entity.LoginResult;
+
 import java.io.File;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -187,22 +189,22 @@ public class RetrofitClient {
     }
 
 
-    public Subscription get(String url, Map parameters, Subscriber<IpResult> subscriber) {
+    public <T> T get(String url, Map<String, String> parameters, BaseSubscriber<T> subscriber) {
 
-        return apiService.executeGet(url, parameters)
+        return (T) apiService.executeGet(url, parameters)
                 .compose(schedulersTransformer())
                 .compose(transformer())
                 .subscribe(subscriber);
     }
 
-    public void post(String url, Map<String, String> parameters, Subscriber<ResponseBody> subscriber) {
+    public void post(String url, Map<String, String> parameters, BaseSubscriber<ResponseBody> subscriber) {
         apiService.executePost(url, parameters)
                 .compose(schedulersTransformer())
                 .compose(transformer())
                 .subscribe(subscriber);
     }
 
-    public Subscription json(String url, RequestBody jsonStr, Subscriber<IpResult> subscriber) {
+    public Subscription json(String url, RequestBody jsonStr, Subscriber<LoginResult> subscriber) {
 
         return apiService.json(url, jsonStr)
                 .compose(schedulersTransformer())

@@ -6,9 +6,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
-import static com.liuzhao.divineapp.base.BaZiConstants.DiZhi;
-import static com.liuzhao.divineapp.base.BaZiConstants.TianGan;
-import static com.liuzhao.divineapp.base.BaZiConstants.jiazhi;
+import static com.liuzhao.divineapp.config.BaZiConstants.DiZhi;
+import static com.liuzhao.divineapp.config.BaZiConstants.TianGan;
+import static com.liuzhao.divineapp.config.BaZiConstants.jiazhi;
 
 /**
  * 工具类，实现公农历互转

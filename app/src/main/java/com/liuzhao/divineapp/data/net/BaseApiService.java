@@ -7,6 +7,7 @@ import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.Header;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
@@ -24,7 +25,12 @@ import rx.Observable;
  */
 public interface BaseApiService {
 
-    String Base_URL = "http://ip.taobao.com/";
+    String Base_URL = "http://japi.juhe.cn/";
+    /**
+     *普通写法
+     */
+    @GET("service/getIpInfo.php/")
+    Observable<ResponseBody> getData(@Query("ip") String ip);
 
     @GET("{url}")
     Observable<BaseResponse<Object>> executeGet(
