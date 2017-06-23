@@ -53,10 +53,6 @@ public abstract class BaseSubscriber<T> extends Subscriber<T> {
         // todo some common as  dismiss loadding
     }
 
-    @Override
-    public void onNext(T t) {
-    }
-
     public abstract void onError(ExceptionHandle.ResponeThrowable e);
 
 }

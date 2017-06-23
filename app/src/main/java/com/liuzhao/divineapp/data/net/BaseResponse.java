@@ -1,42 +1,41 @@
 package com.liuzhao.divineapp.data.net;
 
 
+import java.io.Serializable;
+
 /**
  * 网络返回基类 支持泛型
- * Created by Tamic on 2016-06-06.
  */
-public class BaseResponse<T> {
+public class BaseResponse<T> implements Serializable{
 
-    private int code;
-    private String msg;
-    private T data;
+    private int error_code;
+    private String reason;
+    private T result;
 
-    public int getCode() {
-        return code;
+    public int getError_code() {
+        return error_code;
     }
 
-    public void setCode(int code) {
-        this.code = code;
+    public void setError_code(int error_code) {
+        this.error_code = error_code;
     }
 
-    public String getMsg() {
-        return msg;
+    public String getReason() {
+        return reason;
     }
 
-    public void setMsg(String msg) {
-        this.msg = msg;
+    public void setReason(String reason) {
+        this.reason = reason;
     }
 
-    public T getData() {
-        return data;
+    public T getResult() {
+        return result;
     }
 
-    public void setData(T data) {
-        this.data = data;
+    public void setResult(T result) {
+        this.result = result;
     }
-
     public boolean isOk() {
-        return code == 0;
+        return error_code == 0;
     }
-
 }

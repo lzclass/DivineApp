@@ -3,12 +3,14 @@ package com.liuzhao.divineapp.data.entity;
 
 import com.liuzhao.divineapp.data.entity.main.Joke;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  *
  */
-public class LoginResult extends BaseResult<LoginResult> {
+public class LoginResult implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 	private List<Joke> data;

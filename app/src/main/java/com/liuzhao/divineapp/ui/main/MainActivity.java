@@ -19,18 +19,20 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.liuzhao.divineapp.R;
 import com.liuzhao.divineapp.base.BaseActivity;
 import com.liuzhao.divineapp.data.UserRepository;
-import com.liuzhao.divineapp.data.entity.BaseResult;
 import com.liuzhao.divineapp.data.entity.LoginResult;
 import com.liuzhao.divineapp.data.entity.UserResult;
 import com.liuzhao.divineapp.data.entity.main.MainMenu;
 import com.liuzhao.divineapp.data.local.PreferencesManager;
 import com.liuzhao.divineapp.data.net.BaseApiService;
+import com.liuzhao.divineapp.data.net.BaseResponse;
 import com.liuzhao.divineapp.data.net.BaseSubscriber;
 import com.liuzhao.divineapp.data.net.ExceptionHandle;
-import com.liuzhao.divineapp.data.net.MyApiService;
+import com.liuzhao.divineapp.data.net.JokeApiService;
 import com.liuzhao.divineapp.data.net.RetrofitClient;
 import com.liuzhao.divineapp.ui.bazitest.BaZiTestActivity;
 import com.liuzhao.divineapp.ui.constellation.ConstellationActivity;
@@ -40,6 +42,8 @@ import com.liuzhao.divineapp.ui.setting.SettingActivity;
 import com.liuzhao.divineapp.utils.ShareUtils;
 import com.liuzhao.divineapp.utils.image.GlideImgManager;
 
+import java.io.IOException;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -48,6 +52,7 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import okhttp3.ResponseBody;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -156,43 +161,42 @@ public class MainActivity extends BaseActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.nav_1:
-                Map<String, String> map = new HashMap<>();
-                map.put("sort", "asc");
-                map.put("time", "1418816972");
-                map.put("page", "1");
-                map.put("pagesize", "20");
-                map.put("key", "0c2775b5d1c7ecd8430e49449ea4ec43");
-                RetrofitClient.getInstance(MainActivity.this).createBaseApi().get("joke/content/list.from", map, new BaseSubscriber<LoginResult>(MainActivity.this) {
-                    @Override
-                    public void onError(ExceptionHandle.ResponeThrowable e) {
-                        Toast.makeText(MainActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
-                    }
 
-                    @Override
-                    public void onNext(LoginResult loginResult) {
-                        Toast.makeText(MainActivity.this, loginResult.toString(), Toast.LENGTH_LONG).show();
-                    }
-                });
-                break;
             case R.id.nav_2:
 
-                MyApiService service1 = RetrofitClient.getInstance(MainActivity.this).create(MyApiService.class);
+                JokeApiService service = RetrofitClient.getInstance(MainActivity.this).create(JokeApiService.class);
+                Map<String, Object> maps = new HashMap<>();
+                maps.put("sort", "asc");
+                maps.put("time", "1418816972");
+                maps.put("page", 1);
+                maps.put("pagesize", 20);
+                maps.put("key", "0c2775b5d1c7ecd8430e49449ea4ec43");
 
-                // execute and add observable to RxJava
-                RetrofitClient.getInstance(MainActivity.this).execute(
-                        service1.getJoke("asc", "1418816972", 1, 20), new BaseSubscriber<LoginResult>(MainActivity.this) {
-
+                RetrofitClient.getInstance(MainActivity.this, BaseApiService.JUHE_URL).execute(
+                        service.getJoke(maps), new BaseSubscriber<ResponseBody>(MainActivity.this) {
                             @Override
-                            public void onError(ExceptionHandle.ResponeThrowable e) {
-                                Toast.makeText(MainActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
+                            public void onCompleted() {
 
                             }
 
                             @Override
-                            public void onNext(LoginResult loginResult) {
+                            public void onError(ExceptionHandle.ResponeThrowable e) {
 
-                                Toast.makeText(MainActivity.this, loginResult.toString(), Toast.LENGTH_LONG).show();
+                            }
 
+                            @Override
+                            public void onNext(ResponseBody responseBody) {
+                                String jstr = null;
+                                try {
+                                    jstr = new String(responseBody.bytes());
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                                Type type = new TypeToken<BaseResponse<LoginResult>>() {
+                                }.getType();
+                                BaseResponse<LoginResult> baseResponse = new Gson().fromJson(jstr, type);
+                                LoginResult list = baseResponse.getResult();
+                                Toast.makeText(MainActivity.this, list.getData().get(0).getContent(), Toast.LENGTH_LONG).show();
                             }
                         });
                 break;
@@ -246,10 +250,34 @@ public class MainActivity extends BaseActivity
     private MainMenuAdapter.OnRecyclerViewItemClickListener mOnItemClickListener = new MainMenuAdapter.OnRecyclerViewItemClickListener() {
         @Override
         public void onItemClick(View view, int position) {
-            if (position == 0) {
-                startActivity(new Intent(MainActivity.this, BaZiTestActivity.class));
-                return;
+            switch (position){
+                case 0:
+                    startActivity(new Intent(MainActivity.this, BaZiTestActivity.class));
+                    break;
+                case 1:
+                    startActivity(new Intent(MainActivity.this, BaZiTestActivity.class));
+                    break;
+                case 2:
+                    startActivity(new Intent(MainActivity.this, BaZiTestActivity.class));
+                    break;
+                case 3:
+                    startActivity(new Intent(MainActivity.this, BaZiTestActivity.class));
+                    break;
+                case 4:
+                    startActivity(new Intent(MainActivity.this, BaZiTestActivity.class));
+                    break;
+                case 5:
+                    startActivity(new Intent(MainActivity.this, BaZiTestActivity.class));
+                    break;
+                case 6:
+                    startActivity(new Intent(MainActivity.this, BaZiTestActivity.class));
+                    break;
+                case 7:
+                    startActivity(new Intent(MainActivity.this, BaZiTestActivity.class));
+                    break;
+
             }
+
         }
 
         @Override

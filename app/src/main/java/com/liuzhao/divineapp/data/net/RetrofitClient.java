@@ -4,8 +4,6 @@ import android.content.Context;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.liuzhao.divineapp.data.entity.LoginResult;
-
 import java.io.File;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -13,7 +11,6 @@ import java.util.concurrent.TimeUnit;
 import okhttp3.Cache;
 import okhttp3.ConnectionPool;
 import okhttp3.OkHttpClient;
-import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
@@ -21,7 +18,6 @@ import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import rx.Observable;
 import rx.Subscriber;
-import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
@@ -36,7 +32,7 @@ public class RetrofitClient {
     private static final int DEFAULT_TIMEOUT = 20;
     private BaseApiService apiService;
     private static OkHttpClient okHttpClient;
-    public static String baseUrl = BaseApiService.Base_URL;
+    public static String baseUrl = BaseApiService.JUHE_URL;
     private static Context mContext;
 
     private static Retrofit retrofit;
@@ -47,6 +43,7 @@ public class RetrofitClient {
         private static RetrofitClient INSTANCE = new RetrofitClient(
                 mContext);
     }
+
     public static RetrofitClient getInstance(Context context) {
         if (context != null) {
             mContext = context;
@@ -100,13 +97,14 @@ public class RetrofitClient {
         } catch (Exception e) {
             Log.e("OKHttp", "Could not create http cache", e);
         }
+//        headers.put("Accept", "application/json");
         okHttpClient = new OkHttpClient.Builder()
                 .addNetworkInterceptor(
                         new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.HEADERS))
                 .cookieJar(new NovateCookieManger(context))
-//                .cache(cache)
+                .cache(cache)
                 .addInterceptor(new BaseInterceptor(headers))
-//                .addInterceptor(new CaheInterceptor(context))
+                .addInterceptor(new CaheInterceptor(context))
                 .connectTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS)
                 .writeTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS)
                 .connectionPool(new ConnectionPool(8, 15, TimeUnit.SECONDS))
@@ -118,8 +116,8 @@ public class RetrofitClient {
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .baseUrl(url)
                 .build();
-//        apiService = retrofit.create(BaseApiService.class);
     }
+
     /**
      * create BaseApi  defalte ApiManager
      *
@@ -139,37 +137,6 @@ public class RetrofitClient {
             throw new RuntimeException("Api service is null!");
         }
         return retrofit.create(service);
-    }
-
-
-    public <T> T get(String url, Map<String, String> parameters, BaseSubscriber<T> subscriber) {
-
-        return (T) apiService.executeGet(url, parameters)
-                .compose(schedulersTransformer())
-                .compose(transformer())
-                .subscribe(subscriber);
-    }
-
-    public void post(String url, Map<String, String> parameters, BaseSubscriber<ResponseBody> subscriber) {
-        apiService.executePost(url, parameters)
-                .compose(schedulersTransformer())
-                .compose(transformer())
-                .subscribe(subscriber);
-    }
-
-    public Subscription json(String url, RequestBody jsonStr, Subscriber<LoginResult> subscriber) {
-
-        return apiService.json(url, jsonStr)
-                .compose(schedulersTransformer())
-                .compose(transformer())
-                .subscribe(subscriber);
-    }
-
-    public void upload(String url, RequestBody requestBody, Subscriber<ResponseBody> subscriber) {
-        apiService.upLoadFile(url, requestBody)
-                .compose(schedulersTransformer())
-                .compose(transformer())
-                .subscribe(subscriber);
     }
 
     public void download(String url, final CallBack callBack) {
@@ -231,8 +198,8 @@ public class RetrofitClient {
         @Override
         public T call(BaseResponse<T> response) {
             if (!response.isOk())
-                throw new RuntimeException(response.getCode() + "" + response.getMsg() != null ? response.getMsg() : "");
-            return response.getData();
+                throw new RuntimeException(response.getError_code() + "" + response.getReason() != null ? response.getReason() : "");
+            return response.getResult();
         }
     }
 
@@ -241,20 +208,19 @@ public class RetrofitClient {
      * /**
      * execute your customer API
      * For example:
-     * MyApiService service =
-     * RetrofitClient.getInstance(MainActivity.this).create(MyApiService.class);
+     * JokeApiService service =
+     * RetrofitClient.getInstance(MainActivity.this).create(JokeApiService.class);
      * <p>
      * RetrofitClient.getInstance(MainActivity.this)
      * .execute(service.lgon("name", "password"), subscriber)
      * * @param subscriber
      */
 
-    public static <T> T execute(Observable<T> observable, Subscriber<T> subscriber) {
+    public static <T> T execute(Observable<T> observable, BaseSubscriber<T> subscriber) {
         observable.subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(subscriber);
-
         return null;
     }
 

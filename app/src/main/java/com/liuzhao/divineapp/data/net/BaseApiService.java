@@ -7,7 +7,6 @@ import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
-import retrofit2.http.Header;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
@@ -25,24 +24,18 @@ import rx.Observable;
  */
 public interface BaseApiService {
 
-    String Base_URL = "http://japi.juhe.cn/";
+    String JUHE_URL = "http://japi.juhe.cn/";
 
-    /**
-     * 普通写法
-     */
-    @GET("service/getIpInfo.php/")
-    Observable<ResponseBody> getData(@Query("ip") String ip);
-
-    @GET("{url}")
-    Observable<BaseResponse<Object>> executeGet(
-            @Path("url") String url,
-            @QueryMap Map<String, String> maps);
+    @GET()
+    Observable<ResponseBody> executeGet(
+            @Url String url,
+            @QueryMap Map<String, Object> maps);
 
 
-    @POST("{url}")
+
+    @POST()
     Observable<ResponseBody> executePost(
-            @Path("url") String url,
-            //  @Header("") String authorization,
+            @Url String url,
             @QueryMap Map<String, String> maps);
 
     @POST("{url}")
