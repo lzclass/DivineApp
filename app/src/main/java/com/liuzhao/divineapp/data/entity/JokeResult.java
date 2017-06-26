@@ -10,7 +10,7 @@ import java.util.List;
 /**
  *
  */
-public class LoginResult implements Serializable{
+public class JokeResult implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 	private List<Joke> data;

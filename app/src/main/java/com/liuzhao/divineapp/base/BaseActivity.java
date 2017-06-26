@@ -10,7 +10,7 @@ import android.widget.Toast;
 
 public abstract class BaseActivity extends AppCompatActivity {
     private ProgressDialog progressDialog;
-    protected BaseApplication baseApplication;
+    protected BaseApplication baseApplication= BaseApplication.getSelf();
 
     @Override
     protected void onResume() {
@@ -31,7 +31,6 @@ public abstract class BaseActivity extends AppCompatActivity {
             localLayoutParams.flags = (WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS | localLayoutParams.flags);
         }
         super.onCreate(savedInstanceState);
-        baseApplication = BaseApplication.getSelf();
     }
 
 
