@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.liuzhao.divineapp.R;
+import com.liuzhao.divineapp.data.entity.main.Joke;
 import com.liuzhao.divineapp.ui.joke.dummy.DummyContent.DummyItem;
 
 import java.util.List;
@@ -18,10 +19,10 @@ import java.util.List;
  */
 public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecyclerViewAdapter.ViewHolder> {
 
-    private final List<DummyItem> mValues;
+    private final List<Joke> mValues;
     private final JokeFragment.OnListFragmentInteractionListener mListener;
 
-    public MyItemRecyclerViewAdapter(List<DummyItem> items, JokeFragment.OnListFragmentInteractionListener listener) {
+    public MyItemRecyclerViewAdapter(List<Joke> items, JokeFragment.OnListFragmentInteractionListener listener) {
         mValues = items;
         mListener = listener;
     }
@@ -36,8 +37,7 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
-        holder.mIdView.setText(mValues.get(position).id);
-        holder.mContentView.setText(mValues.get(position).content);
+        holder.mContentView.setText(holder.mItem.getContent());
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -58,14 +58,12 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
-        public final TextView mIdView;
         public final TextView mContentView;
-        public DummyItem mItem;
+        public  Joke mItem;
 
         public ViewHolder(View view) {
             super(view);
             mView = view;
-            mIdView = (TextView) view.findViewById(R.id.id);
             mContentView = (TextView) view.findViewById(R.id.content);
         }
 

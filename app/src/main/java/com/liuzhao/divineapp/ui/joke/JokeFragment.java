@@ -3,6 +3,8 @@ package com.liuzhao.divineapp.ui.joke;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -12,42 +14,61 @@ import android.view.ViewGroup;
 
 import com.liuzhao.divineapp.R;
 import com.liuzhao.divineapp.data.entity.main.Joke;
-import com.liuzhao.divineapp.ui.joke.dummy.DummyContent;
-import com.liuzhao.divineapp.ui.joke.dummy.DummyContent.DummyItem;
+import com.liuzhao.divineapp.widget.recyclerview.OnRcvScrollListener;
+import com.umeng.socialize.utils.Log;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
- * A fragment representing a list of Items.
- * <p/>
- * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
- * interface.
  */
 public class JokeFragment extends Fragment implements JokeContract.View {
 
-    // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
-    // TODO: Customize parameters
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
     private JokeContract.Presenter mPresenter;
     private MyItemRecyclerViewAdapter adapter;
+    @BindView(R.id.recyclerView)
+    RecyclerView recyclerView;
+    @BindView(R.id.swipe_refresh)
+    SwipeRefreshLayout swipe_refresh;
+    private int page = 1;
 
-    /**
-     * Mandatory empty constructor for the fragment manager to instantiate the
-     * fragment (e.g. upon screen orientation changes).
-     */
     public JokeFragment() {
     }
 
     @Override
     public void initRecyclerView(List<Joke> mList) {
+        swipe_refresh.setColorSchemeColors(ContextCompat.getColor(getActivity(), R.color.colorPrimary),
+                ContextCompat.getColor(getActivity(), R.color.holo_green_light), ContextCompat.getColor(getActivity(), R.color.colorAccent),
+                ContextCompat.getColor(getActivity(), R.color.holo_orange_dark));
 
-    }
-
-    @Override
-    public void refreshUi() {
-
+        swipe_refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                swipe_refresh.setRefreshing(false);
+                page = 1;
+                mPresenter.getData(page);
+            }
+        });
+        if (mColumnCount <= 1) {
+            recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        } else {
+            recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), mColumnCount));
+        }
+        adapter = new MyItemRecyclerViewAdapter(mList, mListener);
+        recyclerView.setAdapter(adapter);
+        recyclerView.addOnScrollListener(new OnRcvScrollListener() {
+            @Override
+            public void onBottom() {
+                super.onBottom();
+                page++;
+                mPresenter.getData(page);
+            }
+        });
     }
 
     @Override
@@ -67,8 +88,6 @@ public class JokeFragment extends Fragment implements JokeContract.View {
         this.mPresenter = presenter;
     }
 
-    // TODO: Customize parameter initialization
-    @SuppressWarnings("unused")
     public static JokeFragment newInstance(int columnCount) {
         JokeFragment fragment = new JokeFragment();
         Bundle args = new Bundle();
@@ -80,7 +99,6 @@ public class JokeFragment extends Fragment implements JokeContract.View {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
         }
@@ -90,20 +108,8 @@ public class JokeFragment extends Fragment implements JokeContract.View {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_item_list, container, false);
-        mPresenter.getData();
-        // Set the adapter
-        if (view instanceof RecyclerView) {
-            Context context = view.getContext();
-            RecyclerView recyclerView = (RecyclerView) view;
-            if (mColumnCount <= 1) {
-                recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            } else {
-                recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
-            }
-            adapter = new MyItemRecyclerViewAdapter(DummyContent.ITEMS, mListener);
-            recyclerView.setAdapter(adapter);
-        }
-
+        ButterKnife.bind(this, view);
+        mPresenter.getData(page);
         return view;
     }
 
@@ -125,18 +131,7 @@ public class JokeFragment extends Fragment implements JokeContract.View {
         mListener = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
     public interface OnListFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onListFragmentInteraction(DummyItem item);
+        void onListFragmentInteraction(Joke item);
     }
 }

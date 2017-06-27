@@ -82,7 +82,9 @@
         <activity
             android:name=".ui.bazitest.BaZiTestActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".ui.joke.JokeActivity"></activity>
+        <activity
+            android:name=".ui.joke.JokeActivity"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

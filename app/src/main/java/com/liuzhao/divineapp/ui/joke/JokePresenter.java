@@ -33,6 +33,7 @@ public class JokePresenter implements JokeContract.Presenter {
     public JokePresenter(JokeContract.View view, JokeActivity mActivity) {
         mAddTaskView = checkNotNull(view);
         this.mActivity = mActivity;
+        mAddTaskView.setPresenter(this);
     }
 
     @Override
@@ -45,12 +46,12 @@ public class JokePresenter implements JokeContract.Presenter {
 
     }
 
-    public void getData() {
+    public void getData(int page) {
         JokeApiService service = RetrofitClient.getInstance(mActivity).create(JokeApiService.class);
         Map<String, Object> maps = new HashMap<>();
         maps.put("sort", "asc");
         maps.put("time", "1418816972");
-        maps.put("page", 1);
+        maps.put("page", page);
         maps.put("pagesize", 20);
         maps.put("key", "0c2775b5d1c7ecd8430e49449ea4ec43");
 

@@ -12,12 +12,11 @@ import java.util.List;
 
 public class JokeContract {
     interface View extends BaseView<JokeContract.Presenter> {
-        void refreshUi();
 
         void initRecyclerView(List<Joke> mList);
     }
 
     interface Presenter extends BasePresenter {
-        void getData();
+        void getData(int page);
     }
 }
