@@ -11,10 +11,12 @@ import com.liuzhao.divineapp.data.entity.main.Joke;
 import com.liuzhao.divineapp.ui.joke.dummy.DummyContent;
 import com.liuzhao.divineapp.utils.ActivityUtils;
 
+import java.util.HashSet;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class JokeActivity extends BaseActivity implements JokeFragment.OnListFragmentInteractionListener {
+public class JokeActivity extends BaseActivity {
     private JokeContract.Presenter presenter;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -41,8 +43,4 @@ public class JokeActivity extends BaseActivity implements JokeFragment.OnListFra
         presenter = new JokePresenter(fragment, JokeActivity.this);
     }
 
-    @Override
-    public void onListFragmentInteraction(Joke item) {
-
-    }
 }

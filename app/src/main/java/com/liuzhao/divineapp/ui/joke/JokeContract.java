@@ -12,8 +12,8 @@ import java.util.List;
 
 public class JokeContract {
     interface View extends BaseView<JokeContract.Presenter> {
-
-        void initRecyclerView(List<Joke> mList);
+        void refreshRecyclerView(List<Joke> mList);
+        void initRecyclerView();
     }
 
     interface Presenter extends BasePresenter {

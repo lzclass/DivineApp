@@ -3,20 +3,17 @@ package com.liuzhao.divineapp.ui.joke;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.liuzhao.divineapp.R;
 import com.liuzhao.divineapp.data.entity.main.Joke;
-import com.liuzhao.divineapp.widget.recyclerview.OnRcvScrollListener;
-import com.umeng.socialize.utils.Log;
+import com.liuzhao.divineapp.widget.BaseRecycleAdapter;
+import com.liuzhao.divineapp.widget.recyclerview.SimpleFooterView;
+import com.liuzhao.divineapp.widget.recyclerview.SwipeRecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -28,47 +25,68 @@ public class JokeFragment extends Fragment implements JokeContract.View {
 
     private static final String ARG_COLUMN_COUNT = "column-count";
     private int mColumnCount = 1;
-    private OnListFragmentInteractionListener mListener;
     private JokeContract.Presenter mPresenter;
-    private MyItemRecyclerViewAdapter adapter;
-    @BindView(R.id.recyclerView)
-    RecyclerView recyclerView;
-    @BindView(R.id.swipe_refresh)
-    SwipeRefreshLayout swipe_refresh;
+    @BindView(R.id.swipeRecyclerView)
+    SwipeRecyclerView mSwipeRecyclerView;
     private int page = 1;
+    private List<Joke> list;
+    private RecyclerViewAdapter recyclerViewAdapter;
 
     public JokeFragment() {
     }
 
     @Override
-    public void initRecyclerView(List<Joke> mList) {
-        swipe_refresh.setColorSchemeColors(ContextCompat.getColor(getActivity(), R.color.colorPrimary),
-                ContextCompat.getColor(getActivity(), R.color.holo_green_light), ContextCompat.getColor(getActivity(), R.color.colorAccent),
-                ContextCompat.getColor(getActivity(), R.color.holo_orange_dark));
-
-        swipe_refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+    public void initRecyclerView() {
+        //下拉刷新
+        mSwipeRecyclerView.setRefreshEnable(true);
+        //加载更多
+        mSwipeRecyclerView.setLoadMoreEnable(true);
+        mSwipeRecyclerView.setFooterView(new SimpleFooterView(getActivity()));
+        mSwipeRecyclerView.setOnLoadListener(new SwipeRecyclerView.OnLoadListener() {
             @Override
             public void onRefresh() {
-                swipe_refresh.setRefreshing(false);
+                mSwipeRecyclerView.complete();
                 page = 1;
                 mPresenter.getData(page);
             }
-        });
-        if (mColumnCount <= 1) {
-            recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        } else {
-            recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), mColumnCount));
-        }
-        adapter = new MyItemRecyclerViewAdapter(mList, mListener);
-        recyclerView.setAdapter(adapter);
-        recyclerView.addOnScrollListener(new OnRcvScrollListener() {
+
             @Override
-            public void onBottom() {
-                super.onBottom();
+            public void onLoadMore() {
                 page++;
                 mPresenter.getData(page);
+                mSwipeRecyclerView.onNoMore("-- the end --");
+                mSwipeRecyclerView.stopLoadingMore();
+
             }
         });
+        recyclerViewAdapter = new RecyclerViewAdapter(getActivity(), R.layout.fragment_item, list);
+        mSwipeRecyclerView.setAdapter(recyclerViewAdapter);
+        recyclerViewAdapter.setOnItemClickListner(new BaseRecycleAdapter.OnItemClickListner() {
+            @Override
+            public void onItemClickListner(View v, int position) {
+
+            }
+        });
+        recyclerViewAdapter.setOnItemLongClickListner(new BaseRecycleAdapter.OnItemLongClickListner() {
+            @Override
+            public void onItemLongClickListner(View v, int position) {
+
+            }
+        });
+    }
+
+    @Override
+    public void refreshRecyclerView(List<Joke> mList) {
+        if (list == null) {
+            list = new ArrayList<>();
+        }
+        if (page == 1) {
+            list = mList;
+            recyclerViewAdapter.refresh(mList);
+        } else {
+            list.addAll(mList);
+            recyclerViewAdapter.addData(mList);
+        }
     }
 
     @Override
@@ -109,6 +127,7 @@ public class JokeFragment extends Fragment implements JokeContract.View {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_item_list, container, false);
         ButterKnife.bind(this, view);
+        initRecyclerView();
         mPresenter.getData(page);
         return view;
     }
@@ -117,21 +136,11 @@ public class JokeFragment extends Fragment implements JokeContract.View {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnListFragmentInteractionListener) {
-            mListener = (OnListFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnListFragmentInteractionListener");
-        }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
     }
 
-    public interface OnListFragmentInteractionListener {
-        void onListFragmentInteraction(Joke item);
-    }
 }

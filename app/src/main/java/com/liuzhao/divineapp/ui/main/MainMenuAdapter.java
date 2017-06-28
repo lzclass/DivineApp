@@ -94,8 +94,8 @@ public class MainMenuAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
         public MyViewHolder(View view) {
             super(view);
-            iv_icon = BaseViewHolder.get(view, R.id.iv_icon);
-            tv_name = BaseViewHolder.get(view, R.id.tv_name);
+            iv_icon = (ImageView)view.findViewById(R.id.iv_icon);
+            tv_name = (TextView) view.findViewById(R.id.tv_name);
         }
     }
 

@@ -80,7 +80,7 @@ public class JokePresenter implements JokeContract.Presenter {
 
                         BaseResponse<JokeResult> baseResponse = new Gson().fromJson(jstr, type);
                         JokeResult list = baseResponse.getResult();
-                        mAddTaskView.initRecyclerView(list.getData());
+                        mAddTaskView.refreshRecyclerView(list.getData());
                     }
                 });
     }

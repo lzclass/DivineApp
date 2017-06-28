@@ -114,10 +114,10 @@ public class ConstellationAdapter extends RecyclerView.Adapter<RecyclerView.View
 
         public MyViewHolder(View view) {
             super(view);
-            iv_constellation_logo = BaseViewHolder.get(view, R.id.iv_constellation_logo);
-            tv_name = BaseViewHolder.get(view, R.id.tv_name);
-            tv_date = BaseViewHolder.get(view, R.id.tv_date);
-            tv_property = BaseViewHolder.get(view, R.id.tv_property);
+            iv_constellation_logo = (ImageView)view.findViewById(R.id.iv_constellation_logo);
+            tv_name = (TextView)view.findViewById(R.id.tv_name);
+            tv_date = (TextView)view.findViewById(R.id.tv_date);
+            tv_property = (TextView)view.findViewById(R.id.tv_property);
         }
     }
 

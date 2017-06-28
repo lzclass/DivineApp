@@ -5,17 +5,15 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 
-import com.umeng.socialize.utils.Log;
-
 /**
  * Created by liuzhao on 2017/6/27.
  */
 
-public class OnRcvScrollListener extends RecyclerView.OnScrollListener implements OnBottomListener {
+public abstract class OnRcvScrollListener extends RecyclerView.OnScrollListener {
 
     private String TAG = getClass().getSimpleName();
 
-    public static enum LAYOUT_MANAGER_TYPE {
+    public enum LAYOUT_MANAGER_TYPE {
         LINEAR,
         GRID,
         STAGGERED_GRID
@@ -35,15 +33,12 @@ public class OnRcvScrollListener extends RecyclerView.OnScrollListener implement
      * 最后一个可见的item的位置
      */
     private int lastVisibleItemPosition;
-    /**
-     * 是否正在加载
-     */
-    private boolean isLoadingMore = false;
 
     /**
      * 当前滑动的状态
      */
     private int currentScrollState = 0;
+    private int currentPage = 1;
 
     @Override
     public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
@@ -94,17 +89,12 @@ public class OnRcvScrollListener extends RecyclerView.OnScrollListener implement
         int visibleItemCount = layoutManager.getChildCount();
         int totalItemCount = layoutManager.getItemCount();
         if ((visibleItemCount > 0 && currentScrollState == RecyclerView.SCROLL_STATE_IDLE &&
-                (lastVisibleItemPosition) >= totalItemCount - 1)) {
-            //Log.d(TAG, "is loading more");
-            onBottom();
+                lastVisibleItemPosition >= totalItemCount - 1)) {
+            currentPage++;
+            onLoadMore(currentPage);
         }
     }
 
-
-    @Override
-    public void onBottom() {
-        Log.d(TAG, "is onBottom");
-    }
 
     private int findMax(int[] lastPositions) {
         int max = lastPositions[0];
@@ -115,4 +105,6 @@ public class OnRcvScrollListener extends RecyclerView.OnScrollListener implement
         }
         return max;
     }
+
+    public abstract void onLoadMore(int currentPage);
 }

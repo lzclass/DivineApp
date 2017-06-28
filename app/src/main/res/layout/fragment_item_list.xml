@@ -1,18 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/swipe_refresh"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <android.support.v7.widget.RecyclerView xmlns:tools="http://schemas.android.com/tools"
+    <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:name="com.liuzhao.divineapp.ui.joke.JokeFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
+        android:visibility="gone"
         app:layoutManager="LinearLayoutManager"
         tools:context="com.liuzhao.divineapp.ui.joke.JokeFragment"
         tools:listitem="@layout/fragment_item" />
+
+    <com.liuzhao.divineapp.widget.recyclerview.SwipeRecyclerView
+        android:id="@+id/swipeRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 </android.support.v4.widget.SwipeRefreshLayout>
