@@ -111,7 +111,7 @@ public class MainActivity extends BaseActivity
         mPresenter = new MainPresenter(MainActivity.this, this);
         refreshUi();
         List<MainMenu> list = new ArrayList<>();
-        String[] MENU_NAME = {"八字测算", "星座运势", "八字合婚", "风生水起", "姓名测试", "配对测算", "手写坊"};
+        String[] MENU_NAME = {"八字测算", "星座运势", "八字合婚", "风生水起", "姓名测试", "配对测算", "笑话"};
         int[] MENU_DRAWABLE = {R.mipmap.icon_menu_bazi, R.drawable.ic_xingzuo_baiyang, R.drawable.ic_xingzuo_baiyang,
                 R.drawable.ic_xingzuo_baiyang, R.drawable.ic_xingzuo_baiyang, R.drawable.ic_xingzuo_baiyang, R.drawable.ic_xingzuo_baiyang};
         for (int i = 0; i < MENU_NAME.length; i++) {
