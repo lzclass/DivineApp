@@ -17,7 +17,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class JokeActivity extends BaseActivity {
-    private JokeContract.Presenter presenter;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
 
@@ -35,12 +34,10 @@ public class JokeActivity extends BaseActivity {
             }
         });
         if (fragment == null) {
-            fragment = JokeFragment.newInstance(2);
+            fragment = JokeFragment.newInstance();
             ActivityUtils.addFragmentToActivity(getSupportFragmentManager(),
                     fragment, R.id.fl_joke);
         }
-        // Create the presenter
-        presenter = new JokePresenter(fragment, JokeActivity.this);
     }
 
 }

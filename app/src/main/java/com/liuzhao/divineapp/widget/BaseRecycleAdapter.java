@@ -6,7 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.liuzhao.divineapp.base.BaseViewHolder;
+import com.liuzhao.divineapp.base.BaseHolder;
 
 import java.util.List;
 
@@ -14,7 +14,7 @@ import java.util.List;
  * Created by liuzhao on 2017/6/28.
  */
 
-public abstract class BaseRecycleAdapter<T> extends RecyclerView.Adapter<BaseViewHolder> {
+public abstract class BaseRecycleAdapter<T> extends RecyclerView.Adapter<BaseHolder> {
     private int layoutId;
     private List<T> mData;
     private Context mContext;
@@ -34,9 +34,9 @@ public abstract class BaseRecycleAdapter<T> extends RecyclerView.Adapter<BaseVie
     }
 
     @Override
-    public BaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public BaseHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(mContext).inflate(layoutId, parent, false);
-        final BaseViewHolder holder = new BaseViewHolder(mContext, view, parent);
+        final BaseHolder holder = new BaseHolder(mContext, view, parent);
         //单击事件回调
         view.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,11 +60,11 @@ public abstract class BaseRecycleAdapter<T> extends RecyclerView.Adapter<BaseVie
     }
 
     @Override
-    public void onBindViewHolder(BaseViewHolder holder, int position) {
+    public void onBindViewHolder(BaseHolder holder, int position) {
         convert(holder, mData.get(position));
     }
 
-    protected abstract void convert(BaseViewHolder holder, T bean);
+    protected abstract void convert(BaseHolder holder, T bean);
 
     @Override
     public int getItemCount() {

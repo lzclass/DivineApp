@@ -2,6 +2,7 @@ package com.liuzhao.divineapp.widget.recyclerview;
 
 import android.content.Context;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -18,6 +19,7 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import com.liuzhao.divineapp.R;
+
 /**
  * @auther deadline
  * @time   2016/10/22
@@ -70,9 +72,11 @@ public class SwipeRecyclerView extends FrameLayout
         mRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.SwipeRefreshLayout);
         recyclerView = (RecyclerView) view.findViewById(R.id.RecyclerView);
         mLayoutManager = recyclerView.getLayoutManager();
-
+        mRefreshLayout.setColorSchemeColors(ContextCompat.getColor(getContext(), R.color.colorPrimary),
+                ContextCompat.getColor(getContext(), R.color.holo_green_light), ContextCompat.getColor(getContext(), R.color.colorAccent),
+                ContextCompat.getColor(getContext(), R.color.holo_orange_dark));
         mRefreshLayout.setOnRefreshListener(this);
-        recyclerView.setOnScrollListener(new OnScrollListener() {
+        recyclerView.addOnScrollListener(new OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);

@@ -3,6 +3,8 @@ package com.liuzhao.divineapp.ui.joke;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +14,7 @@ import com.liuzhao.divineapp.data.entity.main.Joke;
 import com.liuzhao.divineapp.widget.BaseRecycleAdapter;
 import com.liuzhao.divineapp.widget.recyclerview.SimpleFooterView;
 import com.liuzhao.divineapp.widget.recyclerview.SwipeRecyclerView;
+import com.umeng.socialize.utils.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,14 +40,14 @@ public class JokeFragment extends Fragment implements JokeContract.View {
 
     @Override
     public void initRecyclerView() {
-        //下拉刷新
-        mSwipeRecyclerView.setRefreshEnable(true);
-        //加载更多
-        mSwipeRecyclerView.setLoadMoreEnable(true);
+
+        //set layoutManager
+        mSwipeRecyclerView.getRecyclerView().setLayoutManager(new LinearLayoutManager(getActivity()));
         mSwipeRecyclerView.setFooterView(new SimpleFooterView(getActivity()));
         mSwipeRecyclerView.setOnLoadListener(new SwipeRecyclerView.OnLoadListener() {
             @Override
             public void onRefresh() {
+                Log.d("onRefresh()");
                 mSwipeRecyclerView.complete();
                 page = 1;
                 mPresenter.getData(page);
@@ -52,13 +55,17 @@ public class JokeFragment extends Fragment implements JokeContract.View {
 
             @Override
             public void onLoadMore() {
+                Log.d("onLoadMore()");
                 page++;
                 mPresenter.getData(page);
-                mSwipeRecyclerView.onNoMore("-- the end --");
+                mSwipeRecyclerView.onNoMore("我也是有底线的");
                 mSwipeRecyclerView.stopLoadingMore();
 
             }
         });
+        View view = LayoutInflater.from(getActivity()).inflate(R.layout.adapter_item_main_menu, null);
+        mSwipeRecyclerView.setEmptyView(view);
+        list = new ArrayList<>();
         recyclerViewAdapter = new RecyclerViewAdapter(getActivity(), R.layout.fragment_item, list);
         mSwipeRecyclerView.setAdapter(recyclerViewAdapter);
         recyclerViewAdapter.setOnItemClickListner(new BaseRecycleAdapter.OnItemClickListner() {
@@ -106,10 +113,10 @@ public class JokeFragment extends Fragment implements JokeContract.View {
         this.mPresenter = presenter;
     }
 
-    public static JokeFragment newInstance(int columnCount) {
+    public static JokeFragment newInstance() {
         JokeFragment fragment = new JokeFragment();
         Bundle args = new Bundle();
-        args.putInt(ARG_COLUMN_COUNT, columnCount);
+//        args.putInt(ARG_COLUMN_COUNT, columnCount);
         fragment.setArguments(args);
         return fragment;
     }
@@ -127,6 +134,7 @@ public class JokeFragment extends Fragment implements JokeContract.View {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_item_list, container, false);
         ButterKnife.bind(this, view);
+        mPresenter = new JokePresenter(this, getActivity());
         initRecyclerView();
         mPresenter.getData(page);
         return view;

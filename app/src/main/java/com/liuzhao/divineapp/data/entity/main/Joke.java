@@ -7,10 +7,10 @@ import java.io.Serializable;
  */
 
 public class Joke implements Serializable {
-    String content;
-    String updatetime;
-    String unixtime;
-    String hashId;
+    private String content;
+    private String updatetime;
+    private String unixtime;
+    private String hashId;
 
     public String getContent() {
         return content;

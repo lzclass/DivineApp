@@ -9,7 +9,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.liuzhao.divineapp.R;
-import com.liuzhao.divineapp.base.BaseViewHolder;
 import com.liuzhao.divineapp.data.entity.main.MainMenu;
 
 import java.util.List;

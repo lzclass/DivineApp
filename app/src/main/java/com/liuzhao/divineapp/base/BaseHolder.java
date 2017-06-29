@@ -14,13 +14,13 @@ import android.widget.TextView;
 
 /**
  */
-public class BaseViewHolder extends RecyclerView.ViewHolder {
+public class BaseHolder extends RecyclerView.ViewHolder {
 
     private SparseArray<View> mViews;
     private View mConvertView;
     private Context mContext;
 
-    public BaseViewHolder(Context context, View itemView, ViewGroup parent) {
+    public BaseHolder(Context context, View itemView, ViewGroup parent) {
         super(itemView);
         mContext = context;
         mConvertView = itemView;
@@ -28,11 +28,11 @@ public class BaseViewHolder extends RecyclerView.ViewHolder {
     }
 
 
-    public static BaseViewHolder get(Context context, ViewGroup parent, int layoutId) {
+    public static BaseHolder get(Context context, ViewGroup parent, int layoutId) {
 
         View itemView = LayoutInflater.from(context).inflate(layoutId, parent,
                 false);
-        BaseViewHolder holder = new BaseViewHolder(context, itemView, parent);
+        BaseHolder holder = new BaseHolder(context, itemView, parent);
         return holder;
     }
 
@@ -52,19 +52,19 @@ public class BaseViewHolder extends RecyclerView.ViewHolder {
         return (T) view;
     }
 
-    public BaseViewHolder setText(int viewId, String text) {
+    public BaseHolder setText(int viewId, String text) {
         TextView tv = getView(viewId);
         tv.setText(text);
         return this;
     }
 
-    public BaseViewHolder setImageResource(int viewId, int resId) {
+    public BaseHolder setImageResource(int viewId, int resId) {
         ImageView view = getView(viewId);
         view.setImageResource(resId);
         return this;
     }
 
-    public BaseViewHolder setOnClickListener(int viewId,View.OnClickListener listener) {
+    public BaseHolder setOnClickListener(int viewId, View.OnClickListener listener) {
         View view = getView(viewId);
         view.setOnClickListener(listener);
         return this;

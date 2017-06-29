@@ -3,7 +3,7 @@ package com.liuzhao.divineapp.ui.joke;
 import android.content.Context;
 
 import com.liuzhao.divineapp.R;
-import com.liuzhao.divineapp.base.BaseViewHolder;
+import com.liuzhao.divineapp.base.BaseHolder;
 import com.liuzhao.divineapp.data.entity.main.Joke;
 import com.liuzhao.divineapp.widget.BaseRecycleAdapter;
 
@@ -19,7 +19,7 @@ public class RecyclerViewAdapter extends BaseRecycleAdapter<Joke> {
     }
 
     @Override
-    protected void convert(BaseViewHolder holder, Joke bean) {
+    protected void convert(BaseHolder holder, Joke bean) {
         holder.setText(R.id.content,bean.getContent());
     }
 
