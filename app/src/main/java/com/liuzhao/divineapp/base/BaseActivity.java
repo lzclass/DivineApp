@@ -8,6 +8,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.WindowManager;
 import android.widget.Toast;
 
+import com.umeng.socialize.utils.Log;
+
 public abstract class BaseActivity extends AppCompatActivity {
     private ProgressDialog progressDialog;
     protected BaseApplication baseApplication= BaseApplication.getSelf();
@@ -15,13 +17,13 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-
+        Log.d("onResume()");
     }
 
     @Override
     protected void onDestroy() {
-
         super.onDestroy();
+        Log.d("onDestroy()");
     }
 
     @Override
@@ -31,6 +33,7 @@ public abstract class BaseActivity extends AppCompatActivity {
             localLayoutParams.flags = (WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS | localLayoutParams.flags);
         }
         super.onCreate(savedInstanceState);
+        Log.d("onCreate()");
     }
 
 

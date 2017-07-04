@@ -32,6 +32,7 @@ import com.liuzhao.divineapp.ui.my.UserDetailActivity;
 import com.liuzhao.divineapp.ui.setting.SettingActivity;
 import com.liuzhao.divineapp.utils.ShareUtils;
 import com.liuzhao.divineapp.utils.image.GlideImgManager;
+import com.xiaomi.mipush.sdk.MiPushClient;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -111,8 +112,8 @@ public class MainActivity extends BaseActivity
         mPresenter = new MainPresenter(MainActivity.this, this);
         refreshUi();
         List<MainMenu> list = new ArrayList<>();
-        String[] MENU_NAME = {"八字测算", "星座运势", "八字合婚", "风生水起", "姓名测试", "配对测算", "笑话"};
-        int[] MENU_DRAWABLE = {R.mipmap.icon_menu_bazi, R.drawable.ic_xingzuo_baiyang, R.drawable.ic_xingzuo_baiyang,
+        String[] MENU_NAME = {"八字测算", "投资清单", "八字合婚", "风生水起", "姓名测试", "配对测算", "笑话"};
+        int[] MENU_DRAWABLE = {R.mipmap.icon_menu_bazi, R.mipmap.ic_touzi, R.drawable.ic_xingzuo_baiyang,
                 R.drawable.ic_xingzuo_baiyang, R.drawable.ic_xingzuo_baiyang, R.drawable.ic_xingzuo_baiyang, R.drawable.ic_xingzuo_baiyang};
         for (int i = 0; i < MENU_NAME.length; i++) {
             MainMenu mainMenu = new MainMenu();
@@ -121,7 +122,8 @@ public class MainActivity extends BaseActivity
             list.add(mainMenu);
         }
         initRecyclerView(list);
-
+        //设置小米推送别名
+        MiPushClient.setAlias(this, "test01", null);
     }
 
     @OnClick({R.id.fab})
