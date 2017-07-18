@@ -13,10 +13,14 @@ import java.util.List;
 public class MainContract {
     interface View extends BaseView<MainContract.Presenter> {
         void refreshUi();
-        void initRecyclerView(List<MainMenu> mList);
+        void setYouMinPoint(String pointNum);
+        void initMainMenu();
     }
 
     interface Presenter extends BasePresenter {
+        void initYouMi();
+        void unRegisterYouMiNotify();
+        void setOfferBrowserConfig();//设置积分墙浏览器标题栏样式
 
     }
 }

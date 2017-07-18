@@ -58,37 +58,37 @@ public class JokePresenter implements JokeContract.Presenter {
         maps.put("page", page);
         maps.put("pagesize", 20);
         maps.put("key", "0c2775b5d1c7ecd8430e49449ea4ec43");
+        BaseSubscriber baseSubscriber = new BaseSubscriber<ResponseBody>(mContext) {
+            @Override
+            public void onCompleted() {
 
-        RetrofitClient.getInstance(mContext, BaseApiService.JUHE_URL).execute(
-                service.getJoke(maps), new BaseSubscriber<ResponseBody>(mContext) {
-                    @Override
-                    public void onCompleted() {
+            }
 
-                    }
+            @Override
+            public void onError(ExceptionHandle.ResponeThrowable e) {
 
-                    @Override
-                    public void onError(ExceptionHandle.ResponeThrowable e) {
+            }
 
-                    }
+            @Override
+            public void onNext(ResponseBody responseBody) {
+                String jstr = null;
 
-                    @Override
-                    public void onNext(ResponseBody responseBody) {
-                        String jstr = null;
+                try {
+                    jstr = new String(responseBody.bytes());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                Type type = new TypeToken<BaseResponse<JokeResult>>() {
+                }.getType();
+                Log.d(jstr);
+                JsonReader jsonReader = new JsonReader(new StringReader(jstr));//其中jsonContext为String类型的Json数据
+                jsonReader.setLenient(true);
+                BaseResponse<JokeResult> baseResponse = new Gson().fromJson(jsonReader, type);
+                JokeResult list = baseResponse.getResult();
+                mAddTaskView.refreshRecyclerView(list.getData());
+            }
+        };
 
-                        try {
-                            jstr = new String(responseBody.bytes());
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                        Type type = new TypeToken<BaseResponse<JokeResult>>() {
-                        }.getType();
-                        Log.d(jstr);
-                        JsonReader jsonReader = new JsonReader(new StringReader(jstr));//其中jsonContext为String类型的Json数据
-                        jsonReader.setLenient(true);
-                        BaseResponse<JokeResult> baseResponse = new Gson().fromJson(jsonReader, type);
-                        JokeResult list = baseResponse.getResult();
-                        mAddTaskView.refreshRecyclerView(list.getData());
-                    }
-                });
+        RetrofitClient.getInstance(mContext, BaseApiService.JUHE_URL).execute(service.getJoke(maps), baseSubscriber);
     }
 }

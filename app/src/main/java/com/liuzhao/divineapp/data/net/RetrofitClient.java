@@ -23,9 +23,7 @@ import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 /**
- * RetrofitClient
- * Created by Tamic on 2016-06-15.
- * {@link # https://github.com/NeglectedByBoss/RetrofitClient}
+ *
  */
 public class RetrofitClient {
 

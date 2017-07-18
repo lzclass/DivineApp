@@ -4,17 +4,12 @@ import android.app.ActivityManager;
 import android.app.Application;
 import android.content.Context;
 import android.os.Process;
-import android.util.Log;
 
 import com.umeng.socialize.Config;
 import com.umeng.socialize.PlatformConfig;
-import com.xiaomi.channel.commonutils.logger.LoggerInterface;
-import com.xiaomi.mipush.sdk.Logger;
-import com.xiaomi.mipush.sdk.MiPushClient;
+
 
 import java.util.List;
-
-import static com.umeng.socialize.utils.Log.TAG;
 
 /**
  * Created by liuzhao on 2017/5/19.
@@ -24,9 +19,6 @@ public class BaseApplication extends Application {
 
     //    public UMShareAPI umShareAPI;
     public static BaseApplication mApp;
-    public static final String XIAOMI_PUSH_APP_ID = "2882303761517594135";
-    public static final String XIAOMI_PUSH_APP_KEY = "5461759467135";
-    public static final String TAG = "your packagename";
 
     public static BaseApplication getSelf() {
         return mApp;
@@ -37,27 +29,7 @@ public class BaseApplication extends Application {
         super.onCreate();
         mApp = this;
         Config.DEBUG = true;
-        //初始化push推送服务
-        if (shouldInit()) {
-            MiPushClient.registerPush(this, XIAOMI_PUSH_APP_ID, XIAOMI_PUSH_APP_KEY);
-        }
-        LoggerInterface newLogger = new LoggerInterface() {
-            @Override
-            public void setTag(String tag) {
-                // ignore
-            }
 
-            @Override
-            public void log(String content, Throwable t) {
-                Log.d(TAG, content, t);
-            }
-
-            @Override
-            public void log(String content) {
-                Log.d(TAG, content);
-            }
-        };
-        Logger.setLogger(this, newLogger);
     }
 
     static {
