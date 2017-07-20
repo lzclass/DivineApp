@@ -1,6 +1,7 @@
 package com.liuzhao.divineapp.base;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -13,6 +14,9 @@ import com.umeng.socialize.utils.Log;
 public abstract class BaseActivity extends AppCompatActivity {
     private ProgressDialog progressDialog;
     protected BaseApplication baseApplication= BaseApplication.getSelf();
+    protected static final String TAG = BaseActivity.class.getSimpleName();
+
+    protected Context mContext;
 
     @Override
     protected void onResume() {
@@ -33,6 +37,7 @@ public abstract class BaseActivity extends AppCompatActivity {
             localLayoutParams.flags = (WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS | localLayoutParams.flags);
         }
         super.onCreate(savedInstanceState);
+        mContext = this;
         Log.d("onCreate()");
     }
 
