@@ -21,6 +21,6 @@ public class MainContract {
         void initYouMi();
         void unRegisterYouMiNotify();
         void setOfferBrowserConfig();//设置积分墙浏览器标题栏样式
-
+        void checkConfig();//检查广告配置
     }
 }

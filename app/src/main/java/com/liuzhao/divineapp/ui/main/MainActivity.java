@@ -31,6 +31,7 @@ import com.liuzhao.divineapp.ui.login.LoginActivity;
 import com.liuzhao.divineapp.ui.my.UserDetailActivity;
 import com.liuzhao.divineapp.ui.setting.SettingActivity;
 import com.liuzhao.divineapp.utils.ShareUtils;
+import com.liuzhao.divineapp.utils.Utils;
 import com.liuzhao.divineapp.utils.image.GlideImgManager;
 
 import net.youmi.android.os.OffersManager;
@@ -91,8 +92,8 @@ public class MainActivity extends BaseActivity
 
     @Override
     public void initMainMenu() {
-        String name[] = {"赚红包","兑换"};
-        int image[] = {R.drawable.ic_menu_camera,R.drawable.ic_menu_gallery};
+        String name[] = {"推荐应用", "笑话", "检查配置", "录取通知书","啪啪公式"};
+        int image[] = {R.drawable.ic_menu_camera, R.drawable.ic_menu_gallery, R.drawable.ic_menu_gallery};
         List<MainMenu> datas = new ArrayList<>();
         for (int i = 0; i < name.length; i++) {
             MainMenu mainMenu = new MainMenu();
@@ -108,11 +109,21 @@ public class MainActivity extends BaseActivity
         mAdapter.setOnItemClickListener(new MainMenuAdapter.OnRecyclerViewItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                switch (position){
+                switch (position) {
                     case 0:
-                         OffersManager.getInstance(MainActivity.this).showOffersWall();
+                        OffersManager.getInstance(MainActivity.this).showOffersWall();
                         break;
                     case 1:
+                        startActivity(new Intent(mContext, JokeActivity.class));
+                        break;
+                    case 2:
+                        mPresenter.checkConfig();
+                        break;
+                    case 3:
+
+                        break;
+                    case 4:
+
                         break;
                 }
             }
@@ -160,6 +171,7 @@ public class MainActivity extends BaseActivity
         refreshUi();
         mPresenter.initYouMi();
         initMainMenu();
+
     }
 
     @Override

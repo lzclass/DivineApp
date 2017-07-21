@@ -1,6 +1,8 @@
 package com.liuzhao.divineapp.ui.main;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -52,6 +54,7 @@ public class MainPresenter implements MainContract.Presenter, PointsChangeNotify
         float pointsBalance = PointsManager.getInstance(mContext).queryPoints();
         String money = pointsBalance / 10 + "";
         mainView.setYouMinPoint("余额：" + money);
+        com.liuzhao.divineapp.utils.Utils.toast(money);
     }
 
     @Override
@@ -78,12 +81,11 @@ public class MainPresenter implements MainContract.Presenter, PointsChangeNotify
 
     @Override
     public void initYouMi() {
-        // 自v6.3.0起，所有其他代码必须在初始化接口调用之后才能生效
         // 初始化接口，应用启动的时候调用，参数：appId, appSecret, isEnableYoumiLog
         AdManager.getInstance(mContext).init("d82ca94c89089938", "c6d2f8fbc1620d7c", true);
 
         // 有米android 积分墙sdk 5.0.0之后支持定制浏览器顶部标题栏的部分UI
-        // setOfferBrowserConfig();
+        setOfferBrowserConfig();
 
         // 如果使用积分广告，请务必调用积分广告的初始化接口:
         OffersManager.getInstance(mContext).onAppLaunch();
@@ -109,5 +111,55 @@ public class MainPresenter implements MainContract.Presenter, PointsChangeNotify
             OffersBrowserConfig.getInstance(mContext).setPointsLayoutVisibility(true);
             // 设置标题栏——是否显示有米的logo
             OffersBrowserConfig.getInstance(mContext).setLogoVisibility(false);
+    }
+    /**
+     * 格式化字符串
+     */
+    private void addTextToSb(StringBuilder sb, String format, Object... args) {
+        sb.append(String.format(format, args));
+        sb.append(System.getProperty("line.separator"));
+    }
+
+    /**
+     * 检查广告配置
+     */
+    @Override
+    public void checkConfig() {
+        StringBuilder sb = new StringBuilder();
+
+        addTextToSb(sb,
+                OffersManager.getInstance(mContext).checkOffersAdConfig() ? "广告配置结果：正常" :
+                        "广告配置结果：异常，具体异常请查看Log，Log标签：YoumiSdk"
+        );
+        addTextToSb(sb, "%s服务器回调", OffersManager.getInstance(mContext).isUsingServerCallBack() ? "已经开启" : "没有开启");
+        addTextToSb(sb,
+                "%s通知栏下载相关的通知",
+                AdManager.getInstance(mContext).isDownloadTipsDisplayOnNotification() ? "已经开启" : "没有开启"
+        );
+        addTextToSb(sb,
+                "%s通知栏安装成功的通知",
+                AdManager.getInstance(mContext).isInstallationSuccessTipsDisplayOnNotification() ? "已经开启" : "没有开启"
+        );
+        addTextToSb(sb,
+                "%s通知栏赚取积分的提示",
+                PointsManager.getInstance(mContext).isEnableEarnPointsNotification() ? "已经开启" : "没有开启"
+        );
+        addTextToSb(sb,
+                "%s积分赚取的Toast提示",
+                PointsManager.getInstance(mContext).isEnableEarnPointsToastTips() ? "已经开启" : "没有开启"
+        );
+
+        new AlertDialog.Builder(mContext).setTitle("检查结果")
+                .setMessage(sb.toString())
+                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+
+                })
+                .create()
+                .show();
     }
 }
